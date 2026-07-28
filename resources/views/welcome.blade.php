@@ -126,7 +126,7 @@
                 <h2 class="fw-bold section-title">Edukasi & Kesadaran Lingkungan</h2>
                 <p class="text-muted mt-3">Mengenal jenis-jenis sampah adalah langkah awal menuju pengelolaan lingkungan yang lebih baik.</p>
             </div>
-            <div class="card banner-card">
+            <div class="card banner-card mb-5">
                 <img src="{{ asset('images/edukasi_kategori_sampah.jpg') }}" alt="Edukasi Kategori Sampah" class="img-fluid w-100">
                 <div class="card-body bg-white text-center p-4">
                     <h4 class="fw-bold text-success mb-3">Kenali Jenis Sampah di Lingkungan Kita</h4>
@@ -135,36 +135,34 @@
                     </p>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Berita & Edukasi -->
-    <div class="container my-5 pt-4">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold section-title">Berita & Edukasi Terkini</h2>
-            <p class="text-muted mt-3">Dapatkan informasi terbaru seputar kegiatan pengelolaan sampah dan tips menjaga kebersihan lingkungan.</p>
-        </div>
-        <div class="row g-4">
-            @forelse($beritas as $berita)
-            <div class="col-lg-4 col-md-6">
-                <div class="card border-0 shadow-sm h-100 banner-card">
-                    <div class="card-body p-4 d-flex flex-column">
-                        <div class="mb-3">
-                            <span class="badge bg-primary rounded-pill px-3 py-2 me-2">{{ ucwords($berita->kategori) }}</span>
-                            <small class="text-muted"><i class="fa-regular fa-calendar me-1"></i> {{ $berita->created_at->format('d M Y') }}</small>
+
+            <!-- Daftar Berita Terkini -->
+            <div class="text-start mb-4">
+                <h4 class="fw-bold text-dark">Berita & Edukasi Terkini</h4>
+            </div>
+            <div class="row g-4">
+                @forelse($beritas as $berita)
+                <div class="col-lg-4 col-md-6">
+                    <div class="card border-0 shadow-sm h-100 banner-card">
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="mb-3">
+                                <span class="badge bg-primary rounded-pill px-3 py-2 me-2">{{ ucwords($berita->kategori) }}</span>
+                                <small class="text-muted"><i class="fa-regular fa-calendar me-1"></i> {{ $berita->created_at->format('d M Y') }}</small>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-3">{{ $berita->judul }}</h5>
+                            <p class="text-muted mb-4 flex-grow-1" style="font-size: 0.95rem;">
+                                {{ \Illuminate\Support\Str::limit($berita->konten, 120) }}
+                            </p>
+                            <a href="#" class="text-primary fw-bold text-decoration-none mt-auto">Baca Selengkapnya <i class="fa-solid fa-arrow-right ms-1"></i></a>
                         </div>
-                        <h5 class="fw-bold text-dark mb-3">{{ $berita->judul }}</h5>
-                        <p class="text-muted mb-4 flex-grow-1" style="font-size: 0.95rem;">
-                            {{ \Illuminate\Support\Str::limit($berita->konten, 120) }}
-                        </p>
-                        <a href="#" class="text-primary fw-bold text-decoration-none mt-auto">Baca Selengkapnya <i class="fa-solid fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
+                @empty
+                <div class="col-12 text-center text-muted">
+                    <p>Belum ada berita yang dipublikasikan.</p>
+                </div>
+                @endforelse
             </div>
-            @empty
-            <div class="col-12 text-center text-muted">
-                <p>Belum ada berita yang dipublikasikan.</p>
-            </div>
-            @endforelse
         </div>
     </div>
     
