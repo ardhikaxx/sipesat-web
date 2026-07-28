@@ -23,7 +23,7 @@
             </div>
             <button type="submit" class="btn btn-primary w-100 mb-3">Masuk</button>
             <div class="text-center">
-                <a href="#" class="text-decoration-none">Belum punya akun? Daftar di sini &rarr;</a>
+                <a href="{{ route('register') }}" class="text-decoration-none">Belum punya akun? Daftar di sini &rarr;</a>
             </div>
         </form>
     </div>
