@@ -26,6 +26,9 @@
                     </div>
                     
                     <div class="mb-4 text-center text-lg-start">
+                        <a href="{{ url('/') }}" class="text-decoration-none text-muted mb-3 d-inline-block small fw-semibold">
+                            <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Beranda
+                        </a>
                         <h3 class="fw-bold text-dark">Selamat Datang 👋</h3>
                         <p class="text-muted">Silakan masuk ke akun Anda untuk melanjutkan.</p>
                     </div>
