@@ -6,6 +6,69 @@
 <!-- Leaflet Geocoder CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
+<style>
+    .upload-drop-zone {
+        border: 2px dashed var(--color-border, #E2E5E1);
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        background-color: var(--color-bg, #F6F7F5);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+    }
+    .upload-drop-zone.dragover {
+        border-color: var(--color-primary, #1F6E43);
+        background-color: var(--color-primary-light, #E8F3EC);
+    }
+    .upload-drop-zone i {
+        font-size: 3rem;
+        color: var(--color-muted, #6B7280);
+        margin-bottom: 10px;
+        transition: color 0.3s ease;
+    }
+    .upload-drop-zone.dragover i {
+        color: var(--color-primary, #1F6E43);
+    }
+    .upload-drop-zone input[type="file"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    #image-preview {
+        display: none;
+        margin-top: 15px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--color-border, #E2E5E1);
+    }
+    #image-preview img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .remove-image {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 0, 0, 0.7);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+    }
+</style>
+
 <div class="container my-5">
     <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white">
@@ -99,8 +162,18 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="foto_laporan" class="form-label">Foto Laporan (Maks. 2MB)</label>
-                        <input class="form-control" type="file" id="foto_laporan" name="foto_laporan" accept="image/*" required>
+                        <label class="form-label">Foto Laporan (Maks. 2MB)</label>
+                        <div class="upload-drop-zone" id="drop-zone">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <h6 class="fw-bold text-dark">Seret & Lepas Foto di sini</h6>
+                            <p class="text-muted small mb-0">atau klik untuk menelusuri (PNG, JPG, JPEG)</p>
+                            <input type="file" id="foto_laporan" name="foto_laporan" accept="image/png, image/jpeg, image/jpg" required>
+                        </div>
+                        
+                        <div id="image-preview" class="position-relative">
+                            <button type="button" class="remove-image" id="remove-btn" title="Hapus Foto"><i class="fa-solid fa-xmark"></i></button>
+                            <img src="" id="preview-img" alt="Preview">
+                        </div>
                     </div>
                 </div>
 
@@ -216,5 +289,82 @@
             }
         });
     });
+    
+    // JS for Drag and Drop Image Uploader
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('foto_laporan');
+    const imagePreview = document.getElementById('image-preview');
+    const previewImg = document.getElementById('preview-img');
+    const removeBtn = document.getElementById('remove-btn');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+        dropZone.classList.add('dragover');
+    }
+
+    function unhighlight(e) {
+        dropZone.classList.remove('dragover');
+    }
+
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+
+        if (files.length > 0) {
+            fileInput.files = files; // Assign files to input
+            handleFiles(files[0]);
+        }
+    }
+    
+    fileInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+            handleFiles(this.files[0]);
+        }
+    });
+
+    function handleFiles(file) {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function() {
+                previewImg.src = reader.result;
+                imagePreview.style.display = 'block';
+                dropZone.style.display = 'none';
+            }
+        } else {
+            alert('Harap unggah file berupa gambar (PNG/JPG).');
+            resetUpload();
+        }
+    }
+    
+    removeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        resetUpload();
+    });
+    
+    function resetUpload() {
+        fileInput.value = "";
+        imagePreview.style.display = 'none';
+        previewImg.src = "";
+        dropZone.style.display = 'block';
+    }
 </script>
 @endsection
