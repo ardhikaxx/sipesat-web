@@ -153,7 +153,7 @@
                             <p class="text-muted mb-4 flex-grow-1" style="font-size: 0.95rem;">
                                 {{ \Illuminate\Support\Str::limit($berita->konten, 120) }}
                             </p>
-                            <a href="#" class="text-primary fw-bold text-decoration-none mt-auto">Baca Selengkapnya <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                            <a href="{{ route('berita.show', $berita->slug) }}" class="text-primary fw-bold text-decoration-none mt-auto">Baca Selengkapnya <i class="fa-solid fa-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                 </div>

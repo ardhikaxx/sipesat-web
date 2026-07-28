@@ -20,4 +20,14 @@ class LandingController extends Controller
             
         return view('welcome', compact('laporans', 'beritas'));
     }
+
+    public function showBerita($slug)
+    {
+        $berita = \App\Models\Berita::where('slug', $slug)->firstOrFail();
+        
+        // Update views count
+        $berita->increment('views');
+        
+        return view('berita.show', compact('berita'));
+    }
 }
