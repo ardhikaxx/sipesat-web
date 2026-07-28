@@ -13,6 +13,11 @@ class LandingController extends Controller
             ->where('status', 'selesai')
             ->get();
             
-        return view('welcome', compact('laporans'));
+        $beritas = \App\Models\Berita::where('status', 'published')
+            ->latest()
+            ->take(3)
+            ->get();
+            
+        return view('welcome', compact('laporans', 'beritas'));
     }
 }
