@@ -7,6 +7,7 @@
 <style>
     body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #ffffff !important;
     }
     .hero-section {
         background-color: #ffffff;
@@ -120,7 +121,7 @@
     </div>
 
     <!-- Banner Edukasi Sampah -->
-    <div class="bg-light py-5">
+    <div class="py-5">
         <div class="container mb-4">
             <div class="text-center mb-5">
                 <h2 class="fw-bold section-title">Edukasi & Kesadaran Lingkungan</h2>
