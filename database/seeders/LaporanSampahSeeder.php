@@ -20,7 +20,7 @@ class LaporanSampahSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             $users[] = User::create([
                 'name' => 'Warga Magetan ' . $i,
-                'email' => 'warga' . $i . '@example.com',
+                'email' => 'warga' . $i . '@gmail.com',
                 'password' => Hash::make('password'),
                 'role_id' => $roleMasyarakat->id,
                 'phone' => '0812345600' . str_pad($i, 2, '0', STR_PAD_LEFT),

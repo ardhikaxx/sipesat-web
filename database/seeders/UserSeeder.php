@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'role_id' => $adminRole->id,
             'name' => 'Admin Diskominfo',
-            'email' => 'admin@sipesat.magetan.go.id',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'phone' => '081234567890',
             'created_at' => now(), 'updated_at' => now()
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
         $petugasId = DB::table('users')->insertGetId([
             'role_id' => $petugasRole->id,
             'name' => 'Budi Santoso',
-            'email' => 'budi@sipesat.magetan.go.id',
+            'email' => 'budi@gmail.com',
             'password' => Hash::make('password'),
             'phone' => '081298765432',
             'created_at' => now(), 'updated_at' => now()
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'role_id' => $masyarakatRole->id,
             'name' => 'Yanuar',
-            'email' => 'yanuar@example.com',
+            'email' => 'yanuar@gmail.com',
             'password' => Hash::make('password'),
             'phone' => '081233334444',
             'kecamatan_id' => $kecamatan->id,
