@@ -38,7 +38,7 @@
                             </td>
                             <td><span class="badge bg-secondary">{{ $b->kategori }}</span></td>
                             <td>
-                                @if($b->status == 'publish')
+                                @if($b->status == 'published')
                                     <span class="badge bg-success rounded-pill px-3"><i class="fa-solid fa-globe me-1"></i> Published</span>
                                 @else
                                     <span class="badge bg-warning text-dark rounded-pill px-3"><i class="fa-solid fa-file-pen me-1"></i> Draft</span>

@@ -33,7 +33,7 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Status <span class="text-danger">*</span></label>
                                 <select name="status" class="form-select">
-                                    <option value="publish" {{ old('status', $beritum->status) == 'publish' ? 'selected' : '' }}>Publish (Terbit)</option>
+                                    <option value="published" {{ old('status', $beritum->status) == 'published' ? 'selected' : '' }}>Publish (Terbit)</option>
                                     <option value="draft" {{ old('status', $beritum->status) == 'draft' ? 'selected' : '' }}>Draft (Konsep)</option>
                                 </select>
                             </div>
