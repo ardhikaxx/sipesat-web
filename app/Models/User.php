@@ -2,48 +2,21 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $fillable = ['role_id', 'name', 'nik', 'email', 'password', 'phone', 'address', 'kecamatan_id', 'desa_id', 'photo', 'is_active'];
+    protected $hidden = ['password', 'remember_token'];
+    protected function casts(): array { return ['email_verified_at' => 'datetime', 'password' => 'hashed', 'is_active' => 'boolean']; }
+    public function role() { return $this->belongsTo(Role::class); }
+    public function kecamatan() { return $this->belongsTo(Kecamatan::class); }
+    public function desa() { return $this->belongsTo(Desa::class); }
+    public function petugas() { return $this->hasOne(Petugas::class); }
+    public function laporanSampahs() { return $this->hasMany(LaporanSampah::class, 'user_id'); }
+    
 }
