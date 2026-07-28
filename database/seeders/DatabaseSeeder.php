@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             KategoriSampahSeeder::class,
             UserSeeder::class,
             LaporanSampahSeeder::class,
+            BeritaSeeder::class,
         ]);
     }
 }
