@@ -26,8 +26,8 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Initialize map centered at a default location
-        var map = L.map('map').setView([-6.200000, 106.816666], 10);
+        // Default ke wilayah Magetan
+        var map = L.map('map').setView([-7.6531, 111.3284], 12);
 
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -35,13 +35,22 @@
             attribution: '© OpenStreetMap'
         }).addTo(map);
 
+        var markersGroup = L.featureGroup().addTo(map);
+        var hasMarkers = false;
+
         // Add markers for each laporan
         @foreach($laporans as $laporan)
             @if($laporan->latitude && $laporan->longitude)
-                L.marker([{{ $laporan->latitude }}, {{ $laporan->longitude }}]).addTo(map)
-                    .bindPopup("<b>{{ $laporan->judul_laporan }}</b><br>{{ $laporan->alamat_lengkap }}<br><span class='badge bg-success'>Selesai</span>");
+                hasMarkers = true;
+                L.marker([{{ $laporan->latitude }}, {{ $laporan->longitude }}]).addTo(markersGroup)
+                    .bindPopup("<b>{{ $laporan->judul_laporan }}</b><br>{{ $laporan->alamat_lengkap }}<br><span class='badge bg-success mt-1'>Selesai</span>");
             @endif
         @endforeach
+
+        // Jika ada marker, paskan ukuran peta (zoom/center) agar semua marker terlihat
+        if (hasMarkers) {
+            map.fitBounds(markersGroup.getBounds(), { padding: [50, 50] });
+        }
     });
 </script>
 @endsection
