@@ -12,6 +12,15 @@
         <a href="{{ route('masyarakat.laporan.create') }}" class="btn btn-light btn-lg mt-3 fw-semibold text-primary">Buat Laporan Sekarang</a>
     </div>
 
+    <!-- Map Section -->
+    <div class="my-5">
+        <div class="container mb-3 text-center">
+            <h2 class="fw-bold">Peta Laporan Sampah Selesai</h2>
+            <p class="text-muted">Lihat titik-titik laporan sampah yang telah berhasil diselesaikan oleh petugas.</p>
+        </div>
+        <div id="map" style="height: 500px; width: 100%;"></div>
+    </div>
+
     <!-- Banner Edukasi Sampah -->
     <div class="container my-5">
         <div class="card border-0 shadow-sm overflow-hidden rounded-4">
@@ -21,15 +30,6 @@
                 <p class="text-muted mb-0">Mari bersama-sama menjaga kebersihan lingkungan dengan mengenali dan melaporkan berbagai jenis sampah: Sampah Rumah Tangga, Pembuangan Liar, Sampah Saluran Air, Sampah Pasar, hingga Limbah B3.</p>
             </div>
         </div>
-    </div>
-
-    <!-- Map Section -->
-    <div class="my-5">
-        <div class="container mb-3 text-center">
-            <h2 class="fw-bold">Peta Laporan Sampah Selesai</h2>
-            <p class="text-muted">Lihat titik-titik laporan sampah yang telah berhasil diselesaikan oleh petugas.</p>
-        </div>
-        <div id="map" style="height: 500px; width: 100%;"></div>
     </div>
 </div>
 
