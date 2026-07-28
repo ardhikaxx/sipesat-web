@@ -8,7 +8,7 @@
     <!-- Hero Section -->
     <div class="bg-primary text-white text-center py-5">
         <h1 class="display-4 fw-bold">Selamat Datang di Sipesat</h1>
-        <p class="lead">Sistem Pelaporan Sampah Terpadu</p>
+        <p class="lead">Sistem Pelaporan Sampah Terpadu - Magetan, Jawa Timur</p>
         <a href="{{ route('masyarakat.laporan.create') }}" class="btn btn-light btn-lg mt-3 fw-semibold text-primary">Buat Laporan Sekarang</a>
     </div>
 
