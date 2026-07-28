@@ -5,83 +5,94 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
 <style>
-    .hero-gradient {
-        background: linear-gradient(135deg, #198754 0%, #0f5132 100%);
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .hero-section {
+        background-color: #f8f9fa;
         position: relative;
         overflow: hidden;
+        padding: 100px 0;
+        border-bottom: 1px solid #e9ecef;
     }
-    .hero-gradient::after {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="2.5" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
-        background-size: 150px;
-        opacity: 0.6;
-        z-index: 1;
+    .hero-badge {
+        background: rgba(25, 135, 84, 0.1);
+        color: #198754;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        font-size: 0.85rem;
+        padding: 8px 16px;
+        border-radius: 50px;
+        display: inline-block;
+        margin-bottom: 1.5rem;
     }
-    .hero-content {
-        position: relative;
-        z-index: 2;
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        color: #212529;
+        line-height: 1.2;
+    }
+    .hero-title span {
+        color: #198754;
+    }
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: #6c757d;
+        font-weight: 400;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
     }
     .btn-custom {
-        transition: all 0.3s ease;
-        border-radius: 50px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: all 0.2s ease;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 14px 32px;
     }
     .btn-custom:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(25, 135, 84, 0.2);
     }
     .map-container {
-        border-radius: 20px;
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        border: 1px solid rgba(0,0,0,0.04);
     }
     .banner-card {
-        border-radius: 20px;
+        border-radius: 16px;
         overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: none;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.04);
     }
     .banner-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.08);
     }
     .section-title {
-        position: relative;
-        display: inline-block;
-        padding-bottom: 10px;
-    }
-    .section-title::after {
-        content: '';
-        position: absolute;
-        width: 50px;
-        height: 4px;
-        background: #198754;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 2px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        color: #212529;
     }
     .footer-custom {
-        background-color: #f8f9fa;
-        border-top: 1px solid #e9ecef;
+        background-color: #fff;
+        border-top: 1px solid #eaeaea;
     }
 </style>
 
 <div class="container-fluid p-0">
-    <!-- Hero Section -->
-    <div class="hero-gradient text-white text-center py-5">
-        <div class="container hero-content py-5">
-            <h1 class="display-3 fw-bolder mb-3" style="letter-spacing: -1px;">SIPESAT</h1>
-            <h3 class="fw-normal mb-4 text-light">Sistem Pelaporan Sampah Terpadu <br> <small class="text-white-50">Magetan, Jawa Timur</small></h3>
-            <p class="lead mb-5 mx-auto" style="max-width: 700px; font-weight: 300;">
+    <!-- Minimalist Modern Hero Section -->
+    <div class="hero-section text-center">
+        <div class="container relative z-index-2">
+            <div class="hero-badge">Magetan, Jawa Timur</div>
+            <h1 class="hero-title mb-4">Sistem Pelaporan<br><span>Sampah Terpadu</span></h1>
+            <p class="hero-subtitle mb-5">
                 Wujudkan Magetan yang bersih dan asri. Laporkan tumpukan sampah atau pembuangan ilegal di sekitar Anda dengan cepat dan mudah.
             </p>
-            <a href="{{ route('masyarakat.laporan.create') }}" class="btn btn-light btn-lg btn-custom fw-bold text-success px-5 py-3">
-                <i class="fa-solid fa-camera-retro me-2"></i> Buat Laporan Sekarang
+            <a href="{{ route('masyarakat.laporan.create') }}" class="btn btn-success btn-lg btn-custom">
+                Buat Laporan Sekarang
             </a>
         </div>
     </div>
