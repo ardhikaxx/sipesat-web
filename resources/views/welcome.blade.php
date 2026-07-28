@@ -9,70 +9,52 @@
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     .hero-section {
-        background-color: #fafbfc;
+        background-color: #ffffff;
         position: relative;
         overflow: hidden;
-        padding: 120px 0;
+        padding: 100px 0;
         border-bottom: 1px solid #e9ecef;
     }
-    .hero-glow-1 {
-        position: absolute;
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(25,135,84,0.15) 0%, rgba(25,135,84,0) 70%);
-        top: -100px;
-        left: -100px;
-        z-index: 0;
-        border-radius: 50%;
-    }
-    .hero-glow-2 {
-        position: absolute;
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, rgba(13,110,253,0.1) 0%, rgba(13,110,253,0) 70%);
-        bottom: -200px;
-        right: -100px;
-        z-index: 0;
-        border-radius: 50%;
-    }
-    .hero-badge {
-        background: rgba(25, 135, 84, 0.1);
-        color: #198754;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        font-size: 0.85rem;
-        padding: 8px 16px;
-        border-radius: 50px;
-        display: inline-block;
-        margin-bottom: 1.5rem;
-    }
     .hero-title {
-        font-size: 3.5rem;
+        font-size: 4rem;
         font-weight: 800;
         letter-spacing: -1.5px;
-        color: #212529;
-        line-height: 1.2;
-    }
-    .hero-title span {
-        color: #198754;
+        color: #0f5132;
+        line-height: 1.1;
+        text-transform: uppercase;
     }
     .hero-subtitle {
-        font-size: 1.25rem;
-        color: #6c757d;
-        font-weight: 400;
-        max-width: 600px;
-        margin: 0 auto;
+        font-size: 1.1rem;
+        color: #198754;
+        font-weight: 500;
+        max-width: 500px;
         line-height: 1.6;
     }
-    .btn-custom {
-        transition: all 0.2s ease;
-        border-radius: 8px;
-        font-weight: 600;
-        padding: 14px 32px;
+    .btn-hero {
+        background-color: #0f5132;
+        color: #fff;
+        border-radius: 50px;
+        padding: 14px 40px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        border: none;
     }
-    .btn-custom:hover {
+    .btn-hero:hover {
+        background-color: #198754;
+        color: #fff;
         transform: translateY(-2px);
         box-shadow: 0 10px 20px rgba(25, 135, 84, 0.2);
+    }
+    .hero-illustration {
+        max-width: 100%;
+        height: auto;
+        animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+        100% { transform: translateY(0px); }
     }
     .map-container {
         border-radius: 16px;
@@ -103,19 +85,26 @@
 </style>
 
 <div class="container-fluid p-0">
-    <!-- Minimalist Modern Hero Section -->
-    <div class="hero-section text-center">
-        <div class="hero-glow-1"></div>
-        <div class="hero-glow-2"></div>
-        <div class="container relative z-index-2" style="position: relative; z-index: 2;">
-            <div class="hero-badge">Magetan, Jawa Timur</div>
-            <h1 class="hero-title mb-4">Sistem Pelaporan<br><span>Sampah Terpadu</span></h1>
-            <p class="hero-subtitle mb-5">
-                Wujudkan Magetan yang bersih dan asri. Laporkan tumpukan sampah atau pembuangan ilegal di sekitar Anda dengan cepat dan mudah.
-            </p>
-            <a href="{{ route('masyarakat.laporan.create') }}" class="btn btn-success btn-lg btn-custom">
-                Buat Laporan Sekarang
-            </a>
+    <!-- Split Layout Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Kolom Kiri: Teks -->
+                <div class="col-lg-6 mb-5 mb-lg-0 text-center text-lg-start">
+                    <h1 class="hero-title mb-4">SIPESAT<br>MAGETAN</h1>
+                    <p class="hero-subtitle mb-5 mx-auto mx-lg-0">
+                        Sistem Pelaporan Sampah Terpadu wilayah Magetan, Jawa Timur. Mari bersama wujudkan lingkungan bersih dengan melaporkan tumpukan sampah atau pembuangan ilegal secara cepat dan mudah.
+                    </p>
+                    <a href="{{ route('masyarakat.laporan.create') }}" class="btn btn-hero text-uppercase">
+                        Buat Laporan
+                    </a>
+                </div>
+                
+                <!-- Kolom Kanan: Ilustrasi -->
+                <div class="col-lg-6 text-center">
+                    <img src="{{ asset('images/hero_illustration.jpg') }}" alt="Ilustrasi Petugas Kebersihan" class="hero-illustration img-fluid" style="border-radius: 20px;">
+                </div>
+            </div>
         </div>
     </div>
 
