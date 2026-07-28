@@ -4,7 +4,7 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>Dashboard</h3>
-        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Buat Laporan Baru</button>
+        <a href="{{ route('masyarakat.laporan.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Buat Laporan Baru</a>
     </div>
     
     <div class="row g-3 mb-4">
