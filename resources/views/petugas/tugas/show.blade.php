@@ -2,6 +2,9 @@
 @section('title', 'Detail Tugas - ' . $penugasan->laporanSampah->kode_laporan)
 
 @section('content')
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+
 <div class="container-fluid">
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -42,6 +45,7 @@
                         <div class="col-md-8">
                             {{ $laporan->alamat_lengkap }}<br>
                             <small class="text-muted">Kecamatan: {{ $laporan->kecamatan->nama ?? '-' }}, Desa: {{ $laporan->desa->nama ?? '-' }}</small>
+                            <div class="mt-2" id="mapDetailPetugas" style="height: 200px; border-radius: 8px; border: 1px solid var(--color-border); z-index: 1;"></div>
                         </div>
                     </div>
                     @if($laporan->foto_laporan)
@@ -148,4 +152,22 @@
         </div>
     </div>
 </div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var lat = {{ $laporan->latitude ?? -7.6531 }};
+        var lng = {{ $laporan->longitude ?? 111.3284 }};
+        
+        var map = L.map('mapDetailPetugas').setView([lat, lng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup("<b>Lokasi Laporan</b><br>{{ $laporan->alamat_lengkap }}").openPopup();
+    });
+</script>
 @endsection
