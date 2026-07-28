@@ -1,29 +1,62 @@
 @extends('layouts.app')
+@section('title', 'Wilayah Kecamatan')
+
 @section('content')
 <div class="container-fluid">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Wilayah (Kecamatan)</h6>
-            <a href="{{ route('admin.wilayah.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i> Tambah</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0">Master Wilayah Kecamatan</h3>
+        <a href="{{ route('admin.wilayah.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus me-2"></i>Tambah Kecamatan</a>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-check-circle me-2"></i>{{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead><tr><th>Kode</th><th>Nama Kecamatan</th><th>Aksi</th></tr></thead>
-                <tbody>
-                    @foreach($kecamatans as $w)
-                    <tr>
-                        <td>{{ $w->kode_kecamatan }}</td><td>{{ $w->nama_kecamatan }}</td>
-                        <td>
-                            <a href="{{ route('admin.wilayah.edit', $w) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ route('admin.wilayah.destroy', $w) }}" method="POST" class="d-inline">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin?')">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    @endif
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="py-3 px-4" width="5%">No</th>
+                            <th width="20%">Kode Kecamatan</th>
+                            <th width="40%">Nama Kecamatan</th>
+                            <th width="20%" class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($kecamatans as $index => $k)
+                        <tr>
+                            <td class="py-3 px-4">{{ $index + 1 }}</td>
+                            <td class="font-mono text-primary fw-bold">{{ $k->kode_kecamatan }}</td>
+                            <td class="fw-bold text-dark">{{ $k->nama_kecamatan }}</td>
+                            <td class="text-center">
+                                <a href="{{ route('admin.wilayah.edit', $k->id) }}" class="btn btn-sm btn-outline-warning rounded-circle me-1" title="Edit">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <form action="{{ route('admin.wilayah.destroy', $k->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kecamatan ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" title="Hapus">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-5 text-muted">
+                                <i class="fa-solid fa-map-location-dot fs-2 mb-3 d-block"></i>
+                                Belum ada data wilayah kecamatan.
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

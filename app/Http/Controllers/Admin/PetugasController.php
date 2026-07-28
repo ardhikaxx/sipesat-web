@@ -22,11 +22,20 @@ class PetugasController extends Controller
             'name' => 'required', 'email' => 'required|email|unique:users', 'password' => 'required',
             'nip' => 'required|unique:petugas', 'wilayah_tugas_kecamatan_id' => 'required'
         ]);
+        
+        $rolePetugas = \App\Models\Role::where('name', 'petugas')->first();
+        
         $user = User::create([
-            'name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => 'petugas'
+            'name' => $request->name, 
+            'email' => $request->email, 
+            'password' => Hash::make($request->password), 
+            'role_id' => $rolePetugas->id
         ]);
         Petugas::create([
-            'user_id' => $user->id, 'nip' => $request->nip, 'wilayah_tugas_kecamatan_id' => $request->wilayah_tugas_kecamatan_id, 'status_petugas' => 'aktif'
+            'user_id' => $user->id, 
+            'nip' => $request->nip, 
+            'wilayah_tugas_kecamatan_id' => $request->wilayah_tugas_kecamatan_id, 
+            'status_petugas' => 'aktif'
         ]);
         return redirect()->route('admin.petugas.index')->with('success', 'Petugas ditambahkan');
     }

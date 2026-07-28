@@ -13,11 +13,33 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        $laporans = LaporanSampah::with(['user', 'kategoriSampah', 'kecamatan', 'desa'])
-            ->latest()
-            ->paginate(15);
-            
-        return view('admin.laporan.index', compact('laporans'));
+        $query = LaporanSampah::with(['kategoriSampah', 'kecamatan', 'penugasan.petugas.user', 'user']);
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('kategori_sampah_id')) {
+            $query->where('kategori_sampah_id', $request->kategori_sampah_id);
+        }
+        if ($request->filled('kecamatan_id')) {
+            $query->where('kecamatan_id', $request->kecamatan_id);
+        }
+        if ($request->filled('petugas_id')) {
+            $query->whereHas('penugasan', function($q) use ($request) {
+                $q->where('petugas_id', $request->petugas_id);
+            });
+        }
+        if ($request->filled('tanggal_mulai') && $request->filled('tanggal_akhir')) {
+            $query->whereBetween('created_at', [$request->tanggal_mulai . ' 00:00:00', $request->tanggal_akhir . ' 23:59:59']);
+        }
+
+        $laporans = $query->latest()->paginate(20)->withQueryString();
+
+        $kategoris = \App\Models\KategoriSampah::all();
+        $kecamatans = \App\Models\Kecamatan::all();
+        $petugasList = Petugas::with('user')->where('status_petugas', 'aktif')->get();
+
+        return view('admin.laporan.index', compact('laporans', 'kategoris', 'kecamatans', 'petugasList'));
     }
 
     public function show($id)
