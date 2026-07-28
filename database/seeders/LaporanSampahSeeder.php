@@ -28,13 +28,13 @@ class LaporanSampahSeeder extends Seeder
             ]);
         }
 
-        // Kordinat Magetan yang realistis
+        // Kordinat yang difokuskan pada area pusat Kota Magetan agar tidak terlalu menyebar
         $locations = [
-            ['lat' => -7.6685, 'lng' => 111.2181, 'judul' => 'Tumpukan Sampah Plastik di Jalur Telaga Sarangan', 'alamat' => 'Jl. Raya Telaga Sarangan'],
             ['lat' => -7.6531, 'lng' => 111.3284, 'judul' => 'Sampah Sisa Acara di Alun-Alun', 'alamat' => 'Alun-Alun Kabupaten Magetan'],
-            ['lat' => -7.6582, 'lng' => 111.3256, 'judul' => 'Sampah Sayuran Menggunung di Belakang Pasar', 'alamat' => 'Pasar Baru Magetan'],
-            ['lat' => -7.5857, 'lng' => 111.4442, 'judul' => 'Pembuangan Liar Dekat Terminal', 'alamat' => 'Kawasan Terminal Maospati'],
-            ['lat' => -7.7123, 'lng' => 111.4058, 'judul' => 'Saluran Air Tersumbat Sampah', 'alamat' => 'Kecamatan Kawedanan'],
+            ['lat' => -7.6500, 'lng' => 111.3250, 'judul' => 'Sampah Sayuran Menggunung di Belakang Pasar', 'alamat' => 'Pasar Sayur Magetan'],
+            ['lat' => -7.6580, 'lng' => 111.3320, 'judul' => 'Tumpukan Botol Plastik di Area Stadion', 'alamat' => 'Kawasan Stadion Yosonegoro'],
+            ['lat' => -7.6565, 'lng' => 111.3225, 'judul' => 'Pembuangan Liar Dekat RSUD', 'alamat' => 'Jalan sekitar RSUD dr. Sayidiman'],
+            ['lat' => -7.6610, 'lng' => 111.3265, 'judul' => 'Saluran Air Tersumbat Sampah Daun', 'alamat' => 'Sekitar Taman Ria Manunggal'],
         ];
 
         foreach ($locations as $index => $loc) {
