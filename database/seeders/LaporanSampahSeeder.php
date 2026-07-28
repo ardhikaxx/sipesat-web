@@ -14,16 +14,20 @@ class LaporanSampahSeeder extends Seeder
     public function run()
     {
         $roleMasyarakat = Role::where('name', 'masyarakat')->first();
-        
-        // Buat 10 akun masyarakat
+        $faker = \Faker\Factory::create('id_ID');
+
+        // Buat 10 akun masyarakat dengan nama nyata
         $users = [];
         for ($i = 1; $i <= 10; $i++) {
+            $name = $faker->name;
+            $emailName = strtolower(preg_replace('/[^a-zA-Z]/', '', $name)); // Hilangkan spasi/tanda baca
+            
             $users[] = User::create([
-                'name' => 'Warga Magetan ' . $i,
-                'email' => 'warga' . $i . '@gmail.com',
+                'name' => $name,
+                'email' => $emailName . $i . '@gmail.com',
                 'password' => Hash::make('password'),
                 'role_id' => $roleMasyarakat->id,
-                'phone' => '0812345600' . str_pad($i, 2, '0', STR_PAD_LEFT),
+                'phone' => '08' . $faker->numerify('##########'),
                 'is_active' => true,
             ]);
         }
