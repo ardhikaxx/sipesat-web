@@ -50,7 +50,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ route('landing') }}"><i class="fa-solid fa-leaf text-warning me-2"></i> SIPESAT</a>
+            <a class="navbar-brand fw-bold" href="{{ route('landing') }}"><i class="fa-solid fa-leaf text-white me-2"></i> SIPESAT</a>
             <div>
                 <a href="{{ route('landing') }}" class="btn btn-outline-light rounded-pill px-4">Kembali ke Beranda</a>
             </div>
@@ -62,7 +62,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 fs-6">{{ ucwords($berita->kategori) }}</span>
+                    <span class="badge bg-light text-success rounded-pill px-3 py-2 mb-3 fs-6">{{ ucwords($berita->kategori) }}</span>
                     <h1 class="fw-bold mb-4">{{ $berita->judul }}</h1>
                     <div class="d-flex justify-content-center align-items-center opacity-75">
                         <span class="me-4"><i class="fa-regular fa-calendar me-2"></i> {{ $berita->created_at->translatedFormat('d F Y') }}</span>
