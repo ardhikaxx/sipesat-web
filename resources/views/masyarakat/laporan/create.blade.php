@@ -112,9 +112,9 @@
         var latInput = document.getElementById('latitude');
         var lngInput = document.getElementById('longitude');
         
-        // Default center
-        var defaultLat = latInput.value ? parseFloat(latInput.value) : -6.200000;
-        var defaultLng = lngInput.value ? parseFloat(lngInput.value) : 106.816666;
+        // Default center ke Magetan
+        var defaultLat = latInput.value ? parseFloat(latInput.value) : -7.6531;
+        var defaultLng = lngInput.value ? parseFloat(lngInput.value) : 111.3284;
 
         var map = L.map('map-picker').setView([defaultLat, defaultLng], 12);
 
