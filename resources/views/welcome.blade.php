@@ -9,11 +9,31 @@
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     .hero-section {
-        background-color: #f8f9fa;
+        background-color: #fafbfc;
         position: relative;
         overflow: hidden;
-        padding: 100px 0;
+        padding: 120px 0;
         border-bottom: 1px solid #e9ecef;
+    }
+    .hero-glow-1 {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(25,135,84,0.15) 0%, rgba(25,135,84,0) 70%);
+        top: -100px;
+        left: -100px;
+        z-index: 0;
+        border-radius: 50%;
+    }
+    .hero-glow-2 {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(13,110,253,0.1) 0%, rgba(13,110,253,0) 70%);
+        bottom: -200px;
+        right: -100px;
+        z-index: 0;
+        border-radius: 50%;
     }
     .hero-badge {
         background: rgba(25, 135, 84, 0.1);
@@ -85,7 +105,9 @@
 <div class="container-fluid p-0">
     <!-- Minimalist Modern Hero Section -->
     <div class="hero-section text-center">
-        <div class="container relative z-index-2">
+        <div class="hero-glow-1"></div>
+        <div class="hero-glow-2"></div>
+        <div class="container relative z-index-2" style="position: relative; z-index: 2;">
             <div class="hero-badge">Magetan, Jawa Timur</div>
             <h1 class="hero-title mb-4">Sistem Pelaporan<br><span>Sampah Terpadu</span></h1>
             <p class="hero-subtitle mb-5">
