@@ -26,6 +26,8 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     Route::prefix('admin')->middleware('role:admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+        Route::get('laporan/export/pdf', [App\Http\Controllers\Admin\LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');
+        Route::get('laporan/export/excel', [App\Http\Controllers\Admin\LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
         Route::resource('laporan', App\Http\Controllers\Admin\LaporanController::class);
         Route::post('laporan/{laporan}/verifikasi', [App\Http\Controllers\Admin\LaporanController::class, 'verifikasi'])->name('laporan.verifikasi');
         Route::post('laporan/{laporan}/tugaskan', [App\Http\Controllers\Admin\LaporanController::class, 'tugaskan'])->name('laporan.tugaskan');

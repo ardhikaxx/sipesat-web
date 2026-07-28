@@ -6,8 +6,8 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold mb-0">Manajemen Laporan</h3>
         <div>
-            <button class="btn btn-outline-danger me-2" onclick="window.print()"><i class="fa-solid fa-file-pdf me-1"></i> Export PDF</button>
-            <button class="btn btn-outline-success"><i class="fa-solid fa-file-excel me-1"></i> Export Excel</button>
+            <a href="{{ route('admin.laporan.export.pdf', request()->all()) }}" class="btn btn-outline-danger me-2" target="_blank"><i class="fa-solid fa-file-pdf me-1"></i> Export PDF</a>
+            <a href="{{ route('admin.laporan.export.excel', request()->all()) }}" class="btn btn-outline-success"><i class="fa-solid fa-file-excel me-1"></i> Export Excel</a>
         </div>
     </div>
 

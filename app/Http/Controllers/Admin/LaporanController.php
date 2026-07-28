@@ -13,6 +13,19 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
+        $query = $this->buildFilterQuery($request);
+
+        $laporans = $query->latest()->paginate(20)->withQueryString();
+
+        $kategoris = \App\Models\KategoriSampah::all();
+        $kecamatans = \App\Models\Kecamatan::all();
+        $petugasList = \App\Models\Petugas::with('user')->where('status_petugas', 'aktif')->get();
+
+        return view('admin.laporan.index', compact('laporans', 'kategoris', 'kecamatans', 'petugasList'));
+    }
+
+    private function buildFilterQuery(Request $request)
+    {
         $query = LaporanSampah::with(['kategoriSampah', 'kecamatan', 'penugasan.petugas.user', 'user']);
 
         if ($request->filled('status')) {
@@ -33,13 +46,22 @@ class LaporanController extends Controller
             $query->whereBetween('created_at', [$request->tanggal_mulai . ' 00:00:00', $request->tanggal_akhir . ' 23:59:59']);
         }
 
-        $laporans = $query->latest()->paginate(20)->withQueryString();
+        return $query;
+    }
 
-        $kategoris = \App\Models\KategoriSampah::all();
-        $kecamatans = \App\Models\Kecamatan::all();
-        $petugasList = Petugas::with('user')->where('status_petugas', 'aktif')->get();
+    public function exportPdf(Request $request)
+    {
+        $query = $this->buildFilterQuery($request);
+        $laporans = $query->latest()->get();
 
-        return view('admin.laporan.index', compact('laporans', 'kategoris', 'kecamatans', 'petugasList'));
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.laporan.pdf', compact('laporans', 'request'));
+        return $pdf->download('laporan-sampah-' . date('Y-m-d') . '.pdf');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $query = $this->buildFilterQuery($request);
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\LaporanExport($query), 'laporan-sampah-' . date('Y-m-d') . '.xlsx');
     }
 
     public function show($id)
