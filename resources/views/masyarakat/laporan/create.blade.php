@@ -3,6 +3,8 @@
 @section('content')
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<!-- Leaflet Geocoder CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
 <div class="container my-5">
     <div class="card shadow-sm border-0">
@@ -65,9 +67,15 @@
                     </div>
                     
                     <div class="col-md-12 mb-3">
-                        <label class="form-label">Tentukan Titik Lokasi di Peta</label>
-                        <div id="map-picker" style="height: 300px; width: 100%;" class="border rounded"></div>
-                        <p class="form-text text-muted">Geser marker atau klik pada peta untuk menentukan lokasi.</p>
+                    <div class="col-md-12 mb-3">
+                        <div class="d-flex justify-content-between align-items-end mb-2">
+                            <label class="form-label mb-0">Tentukan Titik Lokasi di Peta</label>
+                            <button type="button" class="btn btn-sm btn-outline-success" id="btn-current-location">
+                                <i class="fa-solid fa-location-crosshairs"></i> Gunakan Lokasi Saat Ini
+                            </button>
+                        </div>
+                        <div id="map-picker" style="height: 350px; width: 100%; z-index: 1;" class="border rounded shadow-sm"></div>
+                        <p class="form-text text-muted">Geser marker, klik pada peta, gunakan fitur pencarian (kaca pembesar), atau deteksi lokasi otomatis.</p>
                         
                         <div class="row mt-2">
                             <div class="col-md-6">
@@ -105,8 +113,9 @@
     </div>
 </div>
 
-<!-- Leaflet JS -->
+<!-- Leaflet JS & Geocoder -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var latInput = document.getElementById('latitude');
@@ -146,6 +155,66 @@
             latInput.value = defaultLat;
             lngInput.value = defaultLng;
         }
+
+        // Fitur 1: Pencarian Alamat (Geocoder)
+        L.Control.geocoder({
+            defaultMarkGeocode: false,
+            placeholder: 'Cari nama tempat / jalan...'
+        }).on('markgeocode', function(e) {
+            var bbox = e.geocode.bbox;
+            var poly = L.polygon([
+                bbox.getSouthEast(),
+                bbox.getNorthEast(),
+                bbox.getNorthWest(),
+                bbox.getSouthWest()
+            ]);
+            map.fitBounds(poly.getBounds());
+            
+            var latlng = e.geocode.center;
+            marker.setLatLng(latlng);
+            latInput.value = latlng.lat;
+            lngInput.value = latlng.lng;
+            
+            // Auto-fill alamat jika masih kosong
+            var alamatInput = document.getElementById('alamat_lengkap');
+            if (!alamatInput.value) {
+                alamatInput.value = e.geocode.name;
+            }
+        }).addTo(map);
+
+        // Fitur 2: Gunakan Lokasi Saat Ini (GPS)
+        document.getElementById('btn-current-location').addEventListener('click', function() {
+            var btn = this;
+            if (navigator.geolocation) {
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mencari lokasi...';
+                btn.disabled = true;
+                
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    
+                    map.setView([lat, lng], 16);
+                    marker.setLatLng([lat, lng]);
+                    latInput.value = lat;
+                    lngInput.value = lng;
+                    
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Lokasi Ditemukan';
+                    btn.classList.replace('btn-outline-success', 'btn-success');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Gunakan Lokasi Saat Ini';
+                        btn.classList.replace('btn-success', 'btn-outline-success');
+                        btn.disabled = false;
+                    }, 3000);
+                }, function(error) {
+                    alert('Gagal mendapatkan lokasi. Pastikan izin lokasi (GPS) diaktifkan di browser/HP Anda.');
+                    btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Gunakan Lokasi Saat Ini';
+                    btn.disabled = false;
+                });
+            } else {
+                alert('Browser Anda tidak mendukung fitur lokasi GPS.');
+            }
+        });
     });
 </script>
 @endsection
