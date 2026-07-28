@@ -24,7 +24,7 @@
     <!-- Banner Edukasi Sampah -->
     <div class="container my-5">
         <div class="card border-0 shadow-sm overflow-hidden rounded-4">
-            <img src="{{ asset('images/edukasi_kategori_sampah.jpg') }}" alt="Edukasi Kategori Sampah" class="img-fluid w-100" style="object-fit: cover; max-height: 400px;">
+            <img src="{{ asset('images/edukasi_kategori_sampah.jpg') }}" alt="Edukasi Kategori Sampah" class="img-fluid w-100">
             <div class="card-body bg-light text-center">
                 <h4 class="fw-bold text-success mb-2">Kenali Jenis Sampah di Lingkungan Kita</h4>
                 <p class="text-muted mb-0">Mari bersama-sama menjaga kebersihan lingkungan dengan mengenali dan melaporkan berbagai jenis sampah: Sampah Rumah Tangga, Pembuangan Liar, Sampah Saluran Air, Sampah Pasar, hingga Limbah B3.</p>
