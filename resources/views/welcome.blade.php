@@ -42,8 +42,40 @@
         @foreach($laporans as $laporan)
             @if($laporan->latitude && $laporan->longitude)
                 hasMarkers = true;
+                
+                var popupContent = `
+                    <div style="min-width: 250px;">
+                        <h6 class="fw-bold mb-1 text-primary">{{ $laporan->judul_laporan }}</h6>
+                        <p class="text-muted small mb-2"><i class="fa-solid fa-hashtag"></i> {{ $laporan->kode_laporan }}</p>
+                        
+                        <div class="mb-2">
+                            <small class="d-block text-secondary">Pelapor:</small>
+                            <span class="fw-semibold"><i class="fa-solid fa-user me-1"></i>{{ $laporan->user->name ?? 'Anonim' }}</span>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <small class="d-block text-secondary">Kategori:</small>
+                            <span class="badge bg-secondary">{{ $laporan->kategoriSampah->nama_kategori ?? '-' }}</span>
+                        </div>
+
+                        <div class="mb-2">
+                            <small class="d-block text-secondary">Lokasi:</small>
+                            <span>{{ $laporan->alamat_lengkap }}</span>
+                        </div>
+
+                        <div class="mb-2">
+                            <small class="d-block text-secondary">Diselesaikan Pada:</small>
+                            <span><i class="fa-solid fa-calendar-check me-1"></i>{{ $laporan->completed_at ? \Carbon\Carbon::parse($laporan->completed_at)->translatedFormat('d F Y H:i') : '-' }}</span>
+                        </div>
+                        
+                        <div class="mt-2 border-top pt-2 text-center">
+                            <span class="badge bg-success w-100 py-2"><i class="fa-solid fa-check-circle me-1"></i> Laporan Selesai</span>
+                        </div>
+                    </div>
+                `;
+
                 L.marker([{{ $laporan->latitude }}, {{ $laporan->longitude }}]).addTo(markersGroup)
-                    .bindPopup("<b>{{ $laporan->judul_laporan }}</b><br>{{ $laporan->alamat_lengkap }}<br><span class='badge bg-success mt-1'>Selesai</span>");
+                    .bindPopup(popupContent, { maxWidth: 300 });
             @endif
         @endforeach
 
