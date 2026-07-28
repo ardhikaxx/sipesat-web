@@ -6,6 +6,15 @@
         <h3>Dashboard</h3>
         <a href="{{ route('masyarakat.laporan.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Buat Laporan Baru</a>
     </div>
+
+    <!-- Banner Edukasi Sampah -->
+    <div class="card border-0 shadow-sm mb-4 overflow-hidden rounded-4">
+        <img src="{{ asset('images/edukasi_kategori_sampah.jpg') }}" alt="Edukasi Kategori Sampah" class="img-fluid w-100" style="object-fit: cover; max-height: 400px;">
+        <div class="card-body bg-light text-center">
+            <h5 class="fw-bold text-success mb-1">Kenali Jenis Sampah di Lingkungan Kita</h5>
+            <p class="text-muted small mb-0">Mari bersama-sama menjaga kebersihan lingkungan dengan mengenali dan melaporkan berbagai jenis sampah: Sampah Rumah Tangga, Pembuangan Liar, Sampah Saluran Air, Sampah Pasar, hingga Limbah B3.</p>
+        </div>
+    </div>
     
     <div class="row g-3 mb-4">
         <div class="col-md-3">
