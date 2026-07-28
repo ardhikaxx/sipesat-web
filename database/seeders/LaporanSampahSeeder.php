@@ -41,12 +41,12 @@ class LaporanSampahSeeder extends Seeder
             'Dekat Terminal Baru', 'Jalan Tembus Sarangan', 'Kawasan Industri Kecil'
         ];
 
-        // Generate 150 Laporan acak di sekitar Magetan
+        // Generate 35 Laporan acak di sekitar Magetan
         // Magetan Center: Lat: -7.6531, Lng: 111.3284
-        for ($i = 1; $i <= 150; $i++) {
-            // Generate random coordinate nearby (radius ~4-6km)
-            $lat = -7.6531 + (mt_rand(-500, 500) / 10000); // -7.6031 to -7.7031
-            $lng = 111.3284 + (mt_rand(-500, 500) / 10000); // 111.2784 to 111.3784
+        for ($i = 1; $i <= 35; $i++) {
+            // Generate random coordinate nearby (radius ~3-5km)
+            $lat = -7.6531 + (mt_rand(-300, 300) / 10000); // -7.6231 to -7.6831
+            $lng = 111.3284 + (mt_rand(-300, 300) / 10000); // 111.2984 to 111.3584
 
             LaporanSampah::create([
                 'kode_laporan' => 'SPT-' . date('Ymd') . '-' . str_pad($i, 4, '0', STR_PAD_LEFT),
