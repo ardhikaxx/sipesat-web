@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
         $petugasId = DB::table('users')->insertGetId([
             'role_id' => $petugasRole->id,
             'name' => 'Budi Santoso',
-            'email' => 'budi@gmail.com',
+            'email' => 'petugas@gmail.com',
             'password' => Hash::make('password'),
             'phone' => '081298765432',
             'created_at' => now(), 'updated_at' => now()
@@ -47,17 +47,7 @@ class UserSeeder extends Seeder
             'created_at' => now(), 'updated_at' => now()
         ]);
 
-        // Masyarakat
-        DB::table('users')->insert([
-            'role_id' => $masyarakatRole->id,
-            'name' => 'Yanuar',
-            'email' => 'yanuar@gmail.com',
-            'password' => Hash::make('password'),
-            'phone' => '081233334444',
-            'kecamatan_id' => $kecamatan->id,
-            'desa_id' => $desa->id,
-            'created_at' => now(), 'updated_at' => now()
-        ]);
+
     }
     
 }
