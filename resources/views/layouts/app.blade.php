@@ -65,7 +65,7 @@
             </main>
         @else
             <div class="d-flex">
-                <div class="sidebar" style="width: 250px;">
+                <div class="sidebar flex-shrink-0" style="width: 250px;">
                     <div class="px-3 mb-4">
                         <h4 class="m-0"><i class="fa-solid fa-leaf text-accent"></i> SIPESAT</h4>
                         <small class="text-white-50">Kab. Magetan</small>
@@ -88,7 +88,7 @@
                         <a href="{{ route('petugas.tugas.index') }}" class="{{ request()->routeIs('petugas.tugas.*') ? 'active' : 'text-white-50' }}"><i class="fa-solid fa-clipboard-list me-2"></i> Tugas Saya</a>
                     @endif
                 </div>
-                <div class="flex-grow-1">
+                <div class="flex-grow-1" style="min-width: 0;">
                     <nav class="navbar navbar-custom px-4 py-3 d-flex justify-content-between">
                         <h5 class="m-0">@yield('title')</h5>
                         <div class="d-flex align-items-center">
