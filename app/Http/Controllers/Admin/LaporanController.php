@@ -94,9 +94,9 @@ class LaporanController extends Controller
 
             LaporanStatusHistory::create([
                 'laporan_sampah_id' => $laporan->id,
-                'user_id' => auth()->id(),
-                'status_awal' => 'menunggu_verifikasi',
-                'status_baru' => 'diverifikasi',
+                'changed_by' => auth()->id(),
+                'status_sebelum' => 'menunggu_verifikasi',
+                'status_sesudah' => 'diverifikasi',
                 'keterangan' => 'Laporan telah diverifikasi oleh Admin.'
             ]);
 
@@ -126,9 +126,9 @@ class LaporanController extends Controller
             if ($statusAwal === 'menunggu_verifikasi') {
                 LaporanStatusHistory::create([
                     'laporan_sampah_id' => $laporan->id,
-                    'user_id' => auth()->id(),
-                    'status_awal' => 'menunggu_verifikasi',
-                    'status_baru' => 'diverifikasi',
+                    'changed_by' => auth()->id(),
+                    'status_sebelum' => 'menunggu_verifikasi',
+                    'status_sesudah' => 'diverifikasi',
                     'keterangan' => 'Laporan diverifikasi otomatis saat penugasan.'
                 ]);
             }
@@ -146,9 +146,9 @@ class LaporanController extends Controller
 
         LaporanStatusHistory::create([
             'laporan_sampah_id' => $laporan->id,
-            'user_id' => auth()->id(),
-            'status_awal' => 'diverifikasi',
-            'status_baru' => 'diverifikasi',
+            'changed_by' => auth()->id(),
+            'status_sebelum' => 'diverifikasi',
+            'status_sesudah' => 'diverifikasi',
             'keterangan' => 'Petugas telah ditugaskan.'
         ]);
 
@@ -167,9 +167,9 @@ class LaporanController extends Controller
 
             LaporanStatusHistory::create([
                 'laporan_sampah_id' => $laporan->id,
-                'user_id' => auth()->id(),
-                'status_awal' => 'menunggu_validasi_akhir',
-                'status_baru' => 'selesai',
+                'changed_by' => auth()->id(),
+                'status_sebelum' => 'menunggu_validasi_akhir',
+                'status_sesudah' => 'selesai',
                 'keterangan' => 'Penanganan laporan telah divalidasi dan selesai.'
             ]);
 

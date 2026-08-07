@@ -88,9 +88,9 @@ class TugasController extends Controller
             
             LaporanStatusHistory::create([
                 'laporan_sampah_id' => $laporan->id,
-                'user_id' => auth()->id(),
-                'status_awal' => 'diverifikasi',
-                'status_baru' => 'sedang_ditangani',
+                'changed_by' => auth()->id(),
+                'status_sebelum' => 'diverifikasi',
+                'status_sesudah' => 'sedang_ditangani',
                 'keterangan' => 'Petugas telah mulai menangani.'
             ]);
 
@@ -125,9 +125,9 @@ class TugasController extends Controller
             
             LaporanStatusHistory::create([
                 'laporan_sampah_id' => $laporan->id,
-                'user_id' => auth()->id(),
-                'status_awal' => 'sedang_ditangani',
-                'status_baru' => 'menunggu_validasi_akhir',
+                'changed_by' => auth()->id(),
+                'status_sebelum' => 'sedang_ditangani',
+                'status_sesudah' => 'menunggu_validasi_akhir',
                 'keterangan' => 'Petugas telah selesai menangani.'
             ]);
 
