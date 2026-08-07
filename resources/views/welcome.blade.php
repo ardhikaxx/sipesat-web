@@ -21,8 +21,7 @@
     }
     .hero-title {
         font-size: 4rem;
-        font-weight: 800;
-        font-style: italic;
+        font-weight: 900;
         letter-spacing: -1.5px;
         color: #ffffff;
         line-height: 1.1;
