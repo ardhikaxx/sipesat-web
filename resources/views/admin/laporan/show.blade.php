@@ -142,7 +142,7 @@
                                 <select name="petugas_id" class="form-select" required>
                                     <option value="">-- Pilih Petugas --</option>
                                     @foreach($petugasList as $p)
-                                        <option value="{{ $p->id }}" {{ ($laporan->penugasan && $laporan->penugasan->petugas_id == $p->id) ? 'selected' : '' }}>{{ $p->user->name }} (NIP: {{ $p->nip }})</option>
+                                        <option value="{{ $p->id }}" {{ ($laporan->penugasan && $laporan->penugasan->petugas_id == $p->id) ? 'selected' : '' }}>{{ $p->user?->name ?? 'Petugas' }} (NIP: {{ $p->nip }})</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -155,7 +155,7 @@
                     @endif
 
                     @if($laporan->status === 'menunggu_validasi_akhir')
-                        <form action="{{ route('admin.laporan.validasiAkhir', $laporan->id) }}" method="POST">
+                        <form action="{{ route('admin.laporan.validasi-akhir', $laporan->id) }}" method="POST">
                             @csrf
                             <div class="alert alert-warning">
                                 Laporan ini sudah ditangani. Silakan periksa foto dokumentasi. Jika sudah sesuai, klik tombol di bawah untuk menyelesaikan.
@@ -187,11 +187,11 @@
                         @foreach($laporan->laporanStatusHistories as $history)
                         <li class="list-group-item p-3">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <strong>{{ str_replace('_', ' ', strtoupper($history->status_baru)) }}</strong>
-                                <small class="text-muted">{{ $history->created_at->format('d M Y H:i') }}</small>
+                                <strong>{{ str_replace('_', ' ', strtoupper($history->status_baru ?? $history->status_sesudah ?? '')) }}</strong>
+                                <small class="text-muted">{{ $history->created_at ? $history->created_at->format('d M Y H:i') : '-' }}</small>
                             </div>
                             <small class="d-block text-muted">{{ $history->keterangan }}</small>
-                            <small class="d-block text-muted mt-1"><i class="fa-solid fa-user"></i> {{ $history->user->name ?? 'Sistem' }}</small>
+                            <small class="d-block text-muted mt-1"><i class="fa-solid fa-user"></i> {{ $history->user?->name ?? 'Sistem' }}</small>
                         </li>
                         @endforeach
                     </ul>
