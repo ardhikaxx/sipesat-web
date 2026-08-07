@@ -10,46 +10,58 @@
         background-color: #ffffff !important;
     }
     .hero-section {
-        background-color: #ffffff;
         position: relative;
+        background: linear-gradient(rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.78)), url("{{ asset('images/alun_alun_hero.png') }}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         overflow: hidden;
-        padding: 100px 0;
+        padding: 120px 0;
         border-bottom: 1px solid #e9ecef;
     }
     .hero-title {
         font-size: 4rem;
         font-weight: 800;
         letter-spacing: -1.5px;
-        color: #0f5132;
+        color: #ffffff;
         line-height: 1.1;
         text-transform: uppercase;
+        text-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+    .hero-title .text-accent {
+        color: #10b981;
     }
     .hero-subtitle {
-        font-size: 1.1rem;
-        color: #198754;
-        font-weight: 500;
-        max-width: 500px;
-        line-height: 1.6;
+        font-size: 1.15rem;
+        color: #f1f5f9;
+        font-weight: 400;
+        max-width: 540px;
+        line-height: 1.7;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
     .btn-hero {
-        background-color: #0f5132;
+        background-color: #10b981;
         color: #fff;
         border-radius: 50px;
-        padding: 14px 40px;
+        padding: 16px 42px;
         font-weight: 700;
         letter-spacing: 0.5px;
         transition: all 0.3s ease;
         border: none;
+        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
     }
     .btn-hero:hover {
-        background-color: #198754;
+        background-color: #059669;
         color: #fff;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(25, 135, 84, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 14px 28px rgba(16, 185, 129, 0.45);
     }
     .hero-illustration {
         max-width: 100%;
         height: auto;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        border: 2px solid rgba(255, 255, 255, 0.2);
         animation: float 4s ease-in-out infinite;
     }
     @keyframes float {
@@ -92,7 +104,7 @@
             <div class="row align-items-center">
                 <!-- Kolom Kiri: Teks -->
                 <div class="col-lg-6 mb-5 mb-lg-0 text-center text-lg-start">
-                    <h1 class="hero-title mb-4">SIPESAT<br>MAGETAN</h1>
+                    <h1 class="hero-title mb-4">SIPESAT<br><span class="text-accent">MAGETAN</span></h1>
                     <p class="hero-subtitle mb-5 mx-auto mx-lg-0">
                         Sistem Pelaporan Sampah Terpadu wilayah Magetan, Jawa Timur. Mari bersama wujudkan lingkungan bersih dengan melaporkan tumpukan sampah atau pembuangan ilegal secara cepat dan mudah.
                     </p>
@@ -103,7 +115,7 @@
                 
                 <!-- Kolom Kanan: Ilustrasi -->
                 <div class="col-lg-6 text-center">
-                    <img src="{{ asset('images/hero_illustration.jpg') }}" alt="Ilustrasi Petugas Kebersihan" class="hero-illustration img-fluid" style="border-radius: 20px;">
+                    <img src="{{ asset('images/hero_illustration.jpg') }}" alt="Ilustrasi Petugas Kebersihan" class="hero-illustration img-fluid">
                 </div>
             </div>
         </div>
