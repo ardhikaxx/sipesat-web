@@ -31,9 +31,9 @@
         color: #ffffff;
         line-height: 1.05;
         text-transform: uppercase;
-        -webkit-text-stroke: 2px currentColor;
+        -webkit-text-stroke: 1.5px currentColor;
         paint-order: stroke fill;
-        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 8px 30px rgba(0, 0, 0, 0.9);
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
     }
     .hero-title .text-accent {
         color: #10b981;
@@ -44,7 +44,7 @@
         font-weight: 500;
         max-width: 540px;
         line-height: 1.7;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 16px rgba(0, 0, 0, 0.8);
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
     }
     .btn-hero {
         background-color: #10b981;
