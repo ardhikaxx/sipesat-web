@@ -20,13 +20,15 @@
         border-bottom: 1px solid #e9ecef;
     }
     .hero-title {
-        font-size: 4rem;
+        font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+        font-size: 4.2rem;
         font-weight: 900;
-        letter-spacing: -1.5px;
+        letter-spacing: -1px;
         color: #ffffff;
-        line-height: 1.1;
+        line-height: 1.05;
         text-transform: uppercase;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85), 0 4px 24px rgba(0, 0, 0, 0.7);
+        -webkit-text-stroke: 1px currentColor;
+        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.9), 0 8px 32px rgba(0, 0, 0, 0.8);
     }
     .hero-title .text-accent {
         color: #10b981;
