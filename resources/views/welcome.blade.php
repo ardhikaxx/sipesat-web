@@ -127,10 +127,10 @@
     <!-- Map Section -->
     <div class="container my-5 pt-4">
         <div class="text-center mb-5">
-            <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
-                <img src="{{ asset('images/logo_magetan.png') }}" alt="Logo Kab Magetan" style="height: 50px; width: auto;">
-                <img src="{{ asset('images/logo_dlh_black.png') }}" alt="Logo DLH Magetan" style="height: 50px; width: auto;">
-                <img src="{{ asset('images/logo_extra.png') }}" alt="Logo SIPESAT" style="height: 50px; width: auto;">
+            <div class="d-flex align-items-center justify-content-center gap-4 mb-4">
+                <img src="{{ asset('images/logo_magetan.png') }}" alt="Logo Kab Magetan" style="height: 75px; width: auto;">
+                <img src="{{ asset('images/logo_dlh_black.png') }}" alt="Logo DLH Magetan" style="height: 75px; width: auto;">
+                <img src="{{ asset('images/logo_extra.png') }}" alt="Logo SIPESAT" style="height: 75px; width: auto;">
             </div>
             <h2 class="fw-bold section-title">Peta Persebaran Laporan Selesai</h2>
             <p class="text-muted mt-3">Pantau secara langsung titik-titik tumpukan sampah yang telah berhasil ditangani oleh petugas kebersihan kami di seluruh wilayah Magetan.</p>
