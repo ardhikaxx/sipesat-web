@@ -11,7 +11,7 @@
     }
     .hero-section {
         position: relative;
-        background: linear-gradient(rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.78)), url("{{ asset('images/alun_alun_hero.png') }}");
+        background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.50)), url("{{ asset('images/alun_alun_hero.png') }}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
