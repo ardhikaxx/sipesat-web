@@ -5,12 +5,34 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Berita;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 
 class BeritaSeeder extends Seeder
 {
     public function run(): void
     {
+        // 1. Siapkan folder tujuan uploads/berita
+        $targetDir = public_path('uploads/berita');
+        if (!File::exists($targetDir)) {
+            File::makeDirectory($targetDir, 0755, true, true);
+        }
+
+        // 2. Salin gambar dari public/images/contoh ke public/uploads/berita
+        $sampleImages = ['image.png', 'image.1.png', 'image.2.png'];
+        $uploadedSamplePaths = [];
+
+        foreach ($sampleImages as $index => $sampleImg) {
+            $sourcePath = public_path('images/contoh/' . $sampleImg);
+            $newFileName = 'berita_contoh_' . ($index + 1) . '.png';
+            $destPath = $targetDir . '/' . $newFileName;
+
+            if (File::exists($sourcePath)) {
+                File::copy($sourcePath, $destPath);
+                $uploadedSamplePaths[] = 'berita/' . $newFileName;
+            }
+        }
+
         $beritas = [
             [
                 'judul' => 'Sosialisasi Pemilahan Sampah dari Rumah',
@@ -44,10 +66,13 @@ class BeritaSeeder extends Seeder
             ]
         ];
 
-        foreach ($beritas as $berita) {
+        foreach ($beritas as $idx => $berita) {
+            $thumbnailPath = !empty($uploadedSamplePaths) ? $uploadedSamplePaths[$idx % count($uploadedSamplePaths)] : null;
+
             Berita::create([
                 'judul' => $berita['judul'],
                 'slug' => Str::slug($berita['judul']),
+                'thumbnail' => $thumbnailPath,
                 'konten' => $berita['konten'],
                 'kategori' => $berita['kategori'],
                 'status' => $berita['status'],

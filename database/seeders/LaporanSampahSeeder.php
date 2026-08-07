@@ -7,12 +7,39 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\LaporanSampah;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 
 class LaporanSampahSeeder extends Seeder
 {
     public function run()
     {
+        // 1. Siapkan folder tujuan uploads/laporan_fotos
+        $targetDir = public_path('uploads/laporan_fotos');
+        if (!File::exists($targetDir)) {
+            File::makeDirectory($targetDir, 0755, true, true);
+        }
+
+        // 2. Salin gambar dari public/images/contoh ke public/uploads/laporan_fotos
+        $sampleImages = ['image.png', 'image.1.png', 'image.2.png'];
+        $uploadedSamplePaths = [];
+
+        foreach ($sampleImages as $index => $sampleImg) {
+            $sourcePath = public_path('images/contoh/' . $sampleImg);
+            $newFileName = 'contoh_laporan_' . ($index + 1) . '.png';
+            $destPath = $targetDir . '/' . $newFileName;
+
+            if (File::exists($sourcePath)) {
+                File::copy($sourcePath, $destPath);
+                $uploadedSamplePaths[] = 'laporan_fotos/' . $newFileName;
+            }
+        }
+
+        // Fallback jika tidak ada gambar di public/images/contoh
+        if (empty($uploadedSamplePaths)) {
+            $uploadedSamplePaths = ['laporan_fotos/contoh_laporan_1.png'];
+        }
+
         $roleMasyarakat = Role::where('name', 'masyarakat')->first();
         $faker = \Faker\Factory::create('id_ID');
 
@@ -52,6 +79,9 @@ class LaporanSampahSeeder extends Seeder
             $lat = -7.6531 + (mt_rand(-300, 300) / 10000); // -7.6231 to -7.6831
             $lng = 111.3284 + (mt_rand(-300, 300) / 10000); // 111.2984 to 111.3584
 
+            // Ambil gambar sampel secara acak
+            $selectedPhoto = $uploadedSamplePaths[array_rand($uploadedSamplePaths)];
+
             LaporanSampah::create([
                 'kode_laporan' => 'SPT-' . date('Ymd') . '-' . str_pad($i, 4, '0', STR_PAD_LEFT),
                 'user_id' => $users[array_rand($users)]->id,
@@ -63,7 +93,7 @@ class LaporanSampahSeeder extends Seeder
                 'alamat_lengkap' => $alamatList[array_rand($alamatList)] . ' Blok ' . chr(rand(65, 90)),
                 'latitude' => $lat,
                 'longitude' => $lng,
-                'foto_laporan' => json_encode(['dummy_laporan.jpg']),
+                'foto_laporan' => [$selectedPhoto],
                 'prioritas_pelapor' => 'sedang',
                 'prioritas_admin' => 'sedang',
                 'status' => 'selesai',
