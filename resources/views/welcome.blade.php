@@ -11,7 +11,7 @@
     }
     .hero-section {
         position: relative;
-        background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.50)), url("{{ asset('images/alun_alun_hero.png') }}");
+        background: linear-gradient(rgba(15, 23, 42, 0.20), rgba(15, 23, 42, 0.25)), url("{{ asset('images/alun_alun_hero.png') }}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -26,18 +26,18 @@
         color: #ffffff;
         line-height: 1.1;
         text-transform: uppercase;
-        text-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85), 0 4px 24px rgba(0, 0, 0, 0.7);
     }
     .hero-title .text-accent {
         color: #10b981;
     }
     .hero-subtitle {
         font-size: 1.15rem;
-        color: #f1f5f9;
-        font-weight: 400;
+        color: #ffffff;
+        font-weight: 500;
         max-width: 540px;
         line-height: 1.7;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 16px rgba(0, 0, 0, 0.8);
     }
     .btn-hero {
         background-color: #10b981;
