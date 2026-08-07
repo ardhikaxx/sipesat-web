@@ -13,5 +13,20 @@ class LaporanStatusHistory extends Model
     protected $casts = ['changed_at' => 'datetime'];
     public function laporanSampah() { return $this->belongsTo(LaporanSampah::class); }
     public function changedBy() { return $this->belongsTo(User::class, 'changed_by'); }
+    public function user() { return $this->belongsTo(User::class, 'changed_by'); }
+
+    public function getStatusBaruAttribute()
+    {
+        return $this->attributes['status_sesudah'] ?? null;
+    }
+
+    public function getStatusAwalAttribute()
+    {
+        return $this->attributes['status_sebelum'] ?? null;
+    }
+    public function getStatusAttribute()
+    {
+        return $this->attributes['status_sesudah'] ?? null;
+    }
     
 }
