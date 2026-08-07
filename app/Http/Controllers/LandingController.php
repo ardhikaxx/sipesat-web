@@ -9,7 +9,7 @@ class LandingController extends Controller
 {
     public function index()
     {
-        $laporans = LaporanSampah::with(['kategoriSampah', 'kecamatan', 'desa', 'user'])
+        $laporans = LaporanSampah::with(['kategoriSampah', 'kecamatan', 'desa', 'user', 'dokumentasiPenanganan'])
             ->where('status', 'selesai')
             ->get();
             

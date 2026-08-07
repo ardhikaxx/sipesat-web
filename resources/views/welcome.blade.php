@@ -197,11 +197,54 @@
             @if($laporan->latitude && $laporan->longitude)
                 hasMarkers = true;
                 
+                @php
+                    $fotoAwal = null;
+                    if (!empty($laporan->foto_laporan)) {
+                        $firstAwal = is_array($laporan->foto_laporan) ? ($laporan->foto_laporan[0] ?? null) : $laporan->foto_laporan;
+                        if ($firstAwal) {
+                            $fotoAwal = asset(str_starts_with($firstAwal, 'uploads/') ? $firstAwal : 'uploads/' . $firstAwal);
+                        }
+                    }
+
+                    $fotoSesudah = null;
+                    if ($laporan->dokumentasiPenanganan && !empty($laporan->dokumentasiPenanganan->foto_sesudah)) {
+                        $firstSesudah = is_array($laporan->dokumentasiPenanganan->foto_sesudah) ? ($laporan->dokumentasiPenanganan->foto_sesudah[0] ?? null) : $laporan->dokumentasiPenanganan->foto_sesudah;
+                        if ($firstSesudah) {
+                            $fotoSesudah = asset(str_starts_with($firstSesudah, 'uploads/') ? $firstSesudah : 'uploads/' . $firstSesudah);
+                        }
+                    }
+                @endphp
+
                 var popupContent = `
-                    <div style="min-width: 250px;">
+                    <div style="min-width: 260px;">
                         <h6 class="fw-bold mb-1 text-primary">{{ $laporan->judul_laporan }}</h6>
                         <p class="text-muted small mb-2"><i class="fa-solid fa-hashtag"></i> {{ $laporan->kode_laporan }}</p>
                         
+                        @if($fotoAwal || $fotoSesudah)
+                        <div class="row g-1 mb-2">
+                            @if($fotoAwal && $fotoSesudah)
+                                <div class="col-6">
+                                    <small class="d-block text-muted text-center mb-1" style="font-size:10px; font-weight:600;">Sebelum</small>
+                                    <img src="{{ $fotoAwal }}" class="img-fluid rounded border" style="height: 90px; width: 100%; object-fit: cover;" alt="Foto Sebelum">
+                                </div>
+                                <div class="col-6">
+                                    <small class="d-block text-success text-center mb-1" style="font-size:10px; font-weight:600;">Sesudah</small>
+                                    <img src="{{ $fotoSesudah }}" class="img-fluid rounded border" style="height: 90px; width: 100%; object-fit: cover;" alt="Foto Sesudah">
+                                </div>
+                            @elseif($fotoSesudah)
+                                <div class="col-12">
+                                    <small class="d-block text-success mb-1" style="font-size:10px; font-weight:600;">Foto Penanganan</small>
+                                    <img src="{{ $fotoSesudah }}" class="img-fluid rounded border" style="height: 120px; width: 100%; object-fit: cover;" alt="Foto Sesudah">
+                                </div>
+                            @elseif($fotoAwal)
+                                <div class="col-12">
+                                    <small class="d-block text-muted mb-1" style="font-size:10px; font-weight:600;">Foto Laporan</small>
+                                    <img src="{{ $fotoAwal }}" class="img-fluid rounded border" style="height: 120px; width: 100%; object-fit: cover;" alt="Foto Laporan">
+                                </div>
+                            @endif
+                        </div>
+                        @endif
+
                         <div class="mb-2">
                             <small class="d-block text-secondary">Pelapor:</small>
                             <span class="fw-semibold"><i class="fa-solid fa-user me-1"></i>{{ $laporan->user->name ?? 'Anonim' }}</span>
@@ -229,7 +272,7 @@
                 `;
 
                 L.marker([{{ $laporan->latitude }}, {{ $laporan->longitude }}]).addTo(markersGroup)
-                    .bindPopup(popupContent, { maxWidth: 300 });
+                    .bindPopup(popupContent, { maxWidth: 320 });
             @endif
         @endforeach
 
