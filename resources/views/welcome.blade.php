@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
 <!-- Google Fonts for Ultra Heavy Display Header -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Outfit:wght@900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Outfit:ital,wght@0,900;1,900&display=swap">
 
 <style>
     body {
@@ -26,6 +26,7 @@
         font-family: 'Montserrat', 'Outfit', 'Arial Black', 'Plus Jakarta Sans', sans-serif !important;
         font-size: 4.5rem;
         font-weight: 900 !important;
+        font-style: italic !important;
         letter-spacing: 0px;
         color: #ffffff;
         line-height: 1.05;
