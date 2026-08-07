@@ -102,6 +102,11 @@
             <div class="row align-items-center">
                 <!-- Kolom Kiri: Teks -->
                 <div class="col-lg-6 mb-5 mb-lg-0 text-center text-lg-start">
+                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-3 mb-3">
+                        <img src="{{ asset('images/logo_magetan.png') }}" alt="Logo Kab Magetan" style="height: 55px; width: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));">
+                        <img src="{{ asset('images/logo_dlh.png') }}" alt="Logo DLH Magetan" style="height: 55px; width: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));">
+                        <img src="{{ asset('images/logo_extra.png') }}" alt="Logo SIPESAT" style="height: 55px; width: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));">
+                    </div>
                     <h1 class="hero-title mb-4">SIPESAT<br><span class="text-accent">MAGETAN</span></h1>
                     <p class="hero-subtitle mb-5 mx-auto mx-lg-0">
                         Sistem Pelaporan Sampah Terpadu wilayah Magetan, Jawa Timur. Mari bersama wujudkan lingkungan bersih dengan melaporkan tumpukan sampah atau pembuangan ilegal secara cepat dan mudah.
