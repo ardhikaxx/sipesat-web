@@ -4,6 +4,9 @@
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
+<!-- Google Fonts for Ultra Heavy Display Header -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Outfit:wght@900&display=swap">
+
 <style>
     body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -20,15 +23,16 @@
         border-bottom: 1px solid #e9ecef;
     }
     .hero-title {
-        font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-        font-size: 4.2rem;
-        font-weight: 900;
-        letter-spacing: -1px;
+        font-family: 'Montserrat', 'Outfit', 'Arial Black', 'Plus Jakarta Sans', sans-serif !important;
+        font-size: 4.5rem;
+        font-weight: 900 !important;
+        letter-spacing: 0px;
         color: #ffffff;
         line-height: 1.05;
         text-transform: uppercase;
-        -webkit-text-stroke: 1px currentColor;
-        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.9), 0 8px 32px rgba(0, 0, 0, 0.8);
+        -webkit-text-stroke: 2px currentColor;
+        paint-order: stroke fill;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 8px 30px rgba(0, 0, 0, 0.9);
     }
     .hero-title .text-accent {
         color: #10b981;
