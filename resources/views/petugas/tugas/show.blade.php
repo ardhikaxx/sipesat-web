@@ -54,7 +54,7 @@
                         <div class="col-md-8">
                             <div class="d-flex gap-2 flex-wrap">
                                 @foreach((array)$laporan->foto_laporan as $foto)
-                                    <img src="{{ asset('storage/' . $foto) }}" alt="Foto Pelapor" class="img-thumbnail" style="max-width: 150px;">
+                                    <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" alt="Foto" class="img-thumbnail" style="max-width: 150px;">
                                 @endforeach
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                             @if($laporan->dokumentasiPenanganan->foto_sebelum)
                                 <div class="d-flex gap-2 flex-wrap">
                                     @foreach((array)$laporan->dokumentasiPenanganan->foto_sebelum as $foto)
-                                        <img src="{{ asset('storage/' . $foto) }}" alt="Foto Sebelum" class="img-thumbnail" style="max-width: 150px;">
+                                        <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" alt="Foto" class="img-thumbnail" style="max-width: 150px;">
                                     @endforeach
                                 </div>
                             @else
@@ -91,7 +91,7 @@
                             @if($laporan->dokumentasiPenanganan->foto_sesudah)
                                 <div class="d-flex gap-2 flex-wrap">
                                     @foreach((array)$laporan->dokumentasiPenanganan->foto_sesudah as $foto)
-                                        <img src="{{ asset('storage/' . $foto) }}" alt="Foto Sesudah" class="img-thumbnail" style="max-width: 150px;">
+                                        <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" alt="Foto" class="img-thumbnail" style="max-width: 150px;">
                                     @endforeach
                                 </div>
                             @else

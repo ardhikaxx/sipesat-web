@@ -18,6 +18,41 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Route handler untuk menyajikan gambar langsung tanpa storage:link (seperti sepeda-listrik)
+use Illuminate\Support\Facades\File;
+
+Route::get('/uploads/{folder}/{filename}', function ($folder, $filename) {
+    $path = public_path('uploads/' . $folder . '/' . $filename);
+    if (!File::exists($path)) {
+        $path = storage_path('uploads/' . $folder . '/' . $filename);
+    }
+    if (!File::exists($path)) {
+        $path = storage_path('app/public/' . $folder . '/' . $filename);
+    }
+    if (!File::exists($path)) {
+        abort(404);
+    }
+    $file = File::get($path);
+    $type = File::mimeType($path);
+    return response($file, 200)->header('Content-Type', $type);
+});
+
+Route::get('/storage/{folder}/{filename}', function ($folder, $filename) {
+    $path = public_path('uploads/' . $folder . '/' . $filename);
+    if (!File::exists($path)) {
+        $path = storage_path('uploads/' . $folder . '/' . $filename);
+    }
+    if (!File::exists($path)) {
+        $path = storage_path('app/public/' . $folder . '/' . $filename);
+    }
+    if (!File::exists($path)) {
+        abort(404);
+    }
+    $file = File::get($path);
+    $type = File::mimeType($path);
+    return response($file, 200)->header('Content-Type', $type);
+});
+
 Route::middleware(['auth', 'active'])->group(function () {
 
     Route::prefix('masyarakat')->middleware('role:masyarakat')->name('masyarakat.')->group(function () {

@@ -63,9 +63,21 @@ class TugasController extends Controller
 
         if ($request->action === 'mulai') {
             if ($request->hasFile('foto_sebelum')) {
+                // Hapus foto lama jika ada update
+                if (!empty($dokumentasi->foto_sebelum)) {
+                    foreach ((array)$dokumentasi->foto_sebelum as $oldFoto) {
+                        $oldPath = public_path('uploads/' . $oldFoto);
+                        if (\Illuminate\Support\Facades\File::exists($oldPath)) {
+                            \Illuminate\Support\Facades\File::delete($oldPath);
+                        }
+                    }
+                }
+
                 $paths = [];
                 foreach ($request->file('foto_sebelum') as $file) {
-                    $paths[] = $file->store('dokumentasi_sebelum', 'public');
+                    $imageName = 'sebelum_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $file->move(public_path('uploads/dokumentasi_sebelum'), $imageName);
+                    $paths[] = 'dokumentasi_sebelum/' . $imageName;
                 }
                 $dokumentasi->foto_sebelum = $paths;
             }
@@ -87,9 +99,21 @@ class TugasController extends Controller
 
         if ($request->action === 'selesai') {
             if ($request->hasFile('foto_sesudah')) {
+                // Hapus foto lama jika ada update
+                if (!empty($dokumentasi->foto_sesudah)) {
+                    foreach ((array)$dokumentasi->foto_sesudah as $oldFoto) {
+                        $oldPath = public_path('uploads/' . $oldFoto);
+                        if (\Illuminate\Support\Facades\File::exists($oldPath)) {
+                            \Illuminate\Support\Facades\File::delete($oldPath);
+                        }
+                    }
+                }
+
                 $paths = [];
                 foreach ($request->file('foto_sesudah') as $file) {
-                    $paths[] = $file->store('dokumentasi_sesudah', 'public');
+                    $imageName = 'sesudah_' . time() . '_' . uniqid() . '.' . $file->extension();
+                    $file->move(public_path('uploads/dokumentasi_sesudah'), $imageName);
+                    $paths[] = 'dokumentasi_sesudah/' . $imageName;
                 }
                 $dokumentasi->foto_sesudah = $paths;
             }

@@ -44,8 +44,14 @@ class LaporanController extends Controller
         $laporan->kode_laporan = 'SPT-' . date('Ymd') . '-' . rand(1000, 9999);
         
         if ($request->hasFile('foto_laporan')) {
-            $path = $request->file('foto_laporan')->store('laporan_fotos', 'public');
-            $laporan->foto_laporan = [$path];
+            $file = $request->file('foto_laporan');
+            $imageName = 'laporan_' . time() . '_' . uniqid() . '.' . $file->extension();
+            
+            // Simpan langsung ke public/uploads/laporan_fotos tanpa storage:link
+            $destinationPath = public_path('uploads/laporan_fotos');
+            $file->move($destinationPath, $imageName);
+
+            $laporan->foto_laporan = ['laporan_fotos/' . $imageName];
         } else {
             $laporan->foto_laporan = [];
         }

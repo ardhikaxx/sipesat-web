@@ -107,7 +107,7 @@
                         @if(!empty($laporan->foto_laporan))
                             @foreach($laporan->foto_laporan as $foto)
                                 <div class="col-6 col-md-4">
-                                    <img src="{{ asset('storage/' . $foto) }}" alt="Foto Laporan" class="img-fluid rounded shadow-sm w-100" style="object-fit: cover; height: 150px;">
+                                    <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" alt="Foto Laporan" class="img-fluid rounded shadow-sm w-100" style="object-fit: cover; height: 150px;">
                                 </div>
                             @endforeach
                         @else
