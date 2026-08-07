@@ -129,7 +129,7 @@
         <div class="text-center mb-5">
             <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
                 <img src="{{ asset('images/logo_magetan.png') }}" alt="Logo Kab Magetan" style="height: 50px; width: auto;">
-                <img src="{{ asset('images/logo_dlh.png') }}" alt="Logo DLH Magetan" style="height: 50px; width: auto;">
+                <img src="{{ asset('images/logo_dlh_black.png') }}" alt="Logo DLH Magetan" style="height: 50px; width: auto;">
                 <img src="{{ asset('images/logo_extra.png') }}" alt="Logo SIPESAT" style="height: 50px; width: auto;">
             </div>
             <h2 class="fw-bold section-title">Peta Persebaran Laporan Selesai</h2>
