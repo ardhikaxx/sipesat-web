@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
@@ -25,7 +26,7 @@ class BeritaController extends Controller
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
             $imageName = 'berita_' . time() . '_' . uniqid() . '.' . $file->extension();
-            $file->move(public_path('uploads/berita'), $imageName);
+            $file->storeAs('public/berita', $imageName);
             $thumbnailPath = 'berita/' . $imageName;
         }
 
@@ -59,6 +60,8 @@ class BeritaController extends Controller
         if ($request->hasFile('thumbnail')) {
             // Hapus gambar lama jika ada
             if (!empty($beritum->thumbnail)) {
+                Storage::delete('public/' . $beritum->thumbnail);
+                // Cek juga di uploads path lama sebagai fallback
                 $oldPath = public_path('uploads/' . $beritum->thumbnail);
                 if (\Illuminate\Support\Facades\File::exists($oldPath)) {
                     \Illuminate\Support\Facades\File::delete($oldPath);
@@ -67,7 +70,7 @@ class BeritaController extends Controller
 
             $file = $request->file('thumbnail');
             $imageName = 'berita_' . time() . '_' . uniqid() . '.' . $file->extension();
-            $file->move(public_path('uploads/berita'), $imageName);
+            $file->storeAs('public/berita', $imageName);
             $thumbnailPath = 'berita/' . $imageName;
         }
 
@@ -86,6 +89,7 @@ class BeritaController extends Controller
 
     public function destroy(Berita $beritum) {
         if (!empty($beritum->thumbnail)) {
+            Storage::delete('public/' . $beritum->thumbnail);
             $oldPath = public_path('uploads/' . $beritum->thumbnail);
             if (\Illuminate\Support\Facades\File::exists($oldPath)) {
                 \Illuminate\Support\Facades\File::delete($oldPath);

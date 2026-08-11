@@ -12,7 +12,7 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
-                    <form action="{{ route('admin.berita.store') }}" method="POST">
+                    <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label fw-bold">Judul Berita <span class="text-danger">*</span></label>
@@ -24,9 +24,9 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Kategori</label>
                                 <select name="kategori" class="form-select">
-                                    <option value="Berita" {{ old('kategori') == 'Berita' ? 'selected' : '' }}>Berita</option>
-                                    <option value="Edukasi" {{ old('kategori') == 'Edukasi' ? 'selected' : '' }}>Edukasi</option>
-                                    <option value="Pengumuman" {{ old('kategori') == 'Pengumuman' ? 'selected' : '' }}>Pengumuman</option>
+                                    <option value="kegiatan" {{ old('kategori') == 'kegiatan' ? 'selected' : '' }}>Kegiatan / Berita</option>
+                                    <option value="edukasi" {{ old('kategori') == 'edukasi' ? 'selected' : '' }}>Edukasi</option>
+                                    <option value="pengumuman" {{ old('kategori') == 'pengumuman' ? 'selected' : '' }}>Pengumuman</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -42,6 +42,13 @@
                             <label class="form-label fw-bold">Konten Artikel <span class="text-danger">*</span></label>
                             <textarea name="konten" class="form-control @error('konten') is-invalid @enderror" rows="10" required placeholder="Tulis isi berita atau edukasi di sini...">{{ old('konten') }}</textarea>
                             @error('konten') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Gambar Thumbnail</label>
+                            <input type="file" name="thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
+                            @error('thumbnail') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            <small class="text-muted">Format: JPG, JPEG, PNG, WEBP. Maks 2MB.</small>
                         </div>
                         
                         <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-paper-plane me-2"></i>Simpan & Publikasikan</button>

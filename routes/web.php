@@ -18,7 +18,6 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Route handler untuk menyajikan gambar langsung tanpa storage:link (seperti sepeda-listrik)
 use Illuminate\Support\Facades\File;
 
 Route::get('/uploads/{folder}/{filename}', function ($folder, $filename) {

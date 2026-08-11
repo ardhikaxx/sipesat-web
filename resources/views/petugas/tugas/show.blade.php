@@ -54,7 +54,9 @@
                         <div class="col-md-8">
                             <div class="d-flex gap-2 flex-wrap">
                                 @foreach((array)$laporan->foto_laporan as $foto)
-                                    <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" alt="Foto" class="img-thumbnail" style="max-width: 150px;">
+                                    <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" 
+                                         onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" 
+                                         alt="Foto" class="img-thumbnail" style="max-width: 150px;">
                                 @endforeach
                             </div>
                         </div>
@@ -79,7 +81,9 @@
                             @if($laporan->dokumentasiPenanganan->foto_sebelum)
                                 <div class="d-flex gap-2 flex-wrap">
                                     @foreach((array)$laporan->dokumentasiPenanganan->foto_sebelum as $foto)
-                                        <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" alt="Foto" class="img-thumbnail" style="max-width: 150px;">
+                                        <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" 
+                                             onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" 
+                                             alt="Foto" class="img-thumbnail" style="max-width: 150px;">
                                     @endforeach
                                 </div>
                             @else
@@ -91,7 +95,9 @@
                             @if($laporan->dokumentasiPenanganan->foto_sesudah)
                                 <div class="d-flex gap-2 flex-wrap">
                                     @foreach((array)$laporan->dokumentasiPenanganan->foto_sesudah as $foto)
-                                        <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" alt="Foto" class="img-thumbnail" style="max-width: 150px;">
+                                        <img src="{{ asset(str_starts_with($foto, 'uploads/') ? $foto : 'uploads/' . $foto) }}" 
+                                             onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" 
+                                             alt="Foto" class="img-thumbnail" style="max-width: 150px;">
                                     @endforeach
                                 </div>
                             @else
@@ -117,7 +123,7 @@
                 </div>
                 <div class="card-body">
                     @if(in_array($laporan->status, ['diverifikasi']))
-                        <form action="{{ route('petugas.tugas.updateStatus', $penugasan->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('petugas.tugas.update-status', $penugasan->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="action" value="mulai">
                             <div class="mb-3">
@@ -128,7 +134,7 @@
                             <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-play"></i> Mulai Kerjakan</button>
                         </form>
                     @elseif($laporan->status === 'sedang_ditangani')
-                        <form action="{{ route('petugas.tugas.updateStatus', $penugasan->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('petugas.tugas.update-status', $penugasan->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="action" value="selesai">
                             <div class="mb-3">

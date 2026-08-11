@@ -173,6 +173,9 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="card border-0 shadow-sm h-100 banner-card">
                         <div class="card-body p-4 d-flex flex-column">
+                            <img src="{{ $berita->thumbnail ? Storage::url($berita->thumbnail) : asset('images/no-image.png') }}" 
+                                 onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" 
+                                 alt="{{ $berita->judul }}" class="img-fluid rounded mb-3" style="height: 180px; object-fit: cover;">
                             <div class="mb-3">
                                 <span class="badge bg-primary rounded-pill px-3 py-2 me-2">{{ ucwords($berita->kategori) }}</span>
                                 <small class="text-muted"><i class="fa-regular fa-calendar me-1"></i> {{ $berita->created_at->format('d M Y') }}</small>
@@ -252,21 +255,21 @@
                             @if($fotoAwal && $fotoSesudah)
                                 <div class="col-6">
                                     <small class="d-block text-muted text-center mb-1" style="font-size:10px; font-weight:600;">Sebelum</small>
-                                    <img src="{{ $fotoAwal }}" class="img-fluid rounded border" style="height: 90px; width: 100%; object-fit: cover;" alt="Foto Sebelum">
+                                    <img src="{{ $fotoAwal }}" onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" class="img-fluid rounded border" style="height: 90px; width: 100%; object-fit: cover;" alt="Foto Sebelum">
                                 </div>
                                 <div class="col-6">
                                     <small class="d-block text-success text-center mb-1" style="font-size:10px; font-weight:600;">Sesudah</small>
-                                    <img src="{{ $fotoSesudah }}" class="img-fluid rounded border" style="height: 90px; width: 100%; object-fit: cover;" alt="Foto Sesudah">
+                                    <img src="{{ $fotoSesudah }}" onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" class="img-fluid rounded border" style="height: 90px; width: 100%; object-fit: cover;" alt="Foto Sesudah">
                                 </div>
                             @elseif($fotoSesudah)
                                 <div class="col-12">
                                     <small class="d-block text-success mb-1" style="font-size:10px; font-weight:600;">Foto Penanganan</small>
-                                    <img src="{{ $fotoSesudah }}" class="img-fluid rounded border" style="height: 120px; width: 100%; object-fit: cover;" alt="Foto Sesudah">
+                                    <img src="{{ $fotoSesudah }}" onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" class="img-fluid rounded border" style="height: 120px; width: 100%; object-fit: cover;" alt="Foto Sesudah">
                                 </div>
                             @elseif($fotoAwal)
                                 <div class="col-12">
                                     <small class="d-block text-muted mb-1" style="font-size:10px; font-weight:600;">Foto Laporan</small>
-                                    <img src="{{ $fotoAwal }}" class="img-fluid rounded border" style="height: 120px; width: 100%; object-fit: cover;" alt="Foto Laporan">
+                                    <img src="{{ $fotoAwal }}" onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" class="img-fluid rounded border" style="height: 120px; width: 100%; object-fit: cover;" alt="Foto Laporan">
                                 </div>
                             @endif
                         </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $berita->judul }} - SIPESAT</title>
+    <title>{{ $berita->judul }} - {{ config('app.name', 'Sipesat') }}</title>
     <!-- Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,9 +79,9 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="article-card">
-                    @if($berita->thumbnail)
-                        <img src="{{ Storage::url($berita->thumbnail) }}" alt="{{ $berita->judul }}" class="img-fluid rounded mb-4 w-100" style="max-height: 400px; object-fit: cover;">
-                    @endif
+                    <img src="{{ $berita->thumbnail ? Storage::url($berita->thumbnail) : asset('images/no-image.png') }}" 
+                         onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" 
+                         alt="{{ $berita->judul }}" class="img-fluid rounded mb-4 w-100" style="max-height: 400px; object-fit: cover;">
                     
                     <div class="article-content">
                         {!! nl2br(e($berita->konten)) !!}

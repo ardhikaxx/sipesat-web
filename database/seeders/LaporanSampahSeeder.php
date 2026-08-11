@@ -18,48 +18,7 @@ class LaporanSampahSeeder extends Seeder
 {
     public function run()
     {
-        // 1. Siapkan folder tujuan uploads untuk laporan_fotos, dokumentasi_sebelum, dan dokumentasi_sesudah
-        $dirs = [
-            'laporan_fotos' => public_path('uploads/laporan_fotos'),
-            'dokumentasi_sebelum' => public_path('uploads/dokumentasi_sebelum'),
-            'dokumentasi_sesudah' => public_path('uploads/dokumentasi_sesudah'),
-        ];
 
-        foreach ($dirs as $dirPath) {
-            if (!File::exists($dirPath)) {
-                File::makeDirectory($dirPath, 0755, true, true);
-            }
-        }
-
-        // 2. Salin gambar dari public/images/contoh ke folder uploads masing-masing
-        $sampleImages = ['image.png', 'image.1.png', 'image.2.png'];
-        $fotoLaporanPaths = [];
-        $fotoSebelumPaths = [];
-        $fotoSesudahPaths = [];
-
-        foreach ($sampleImages as $index => $sampleImg) {
-            $sourcePath = public_path('images/contoh/' . $sampleImg);
-            if (File::exists($sourcePath)) {
-                $fileNameLaporan = 'contoh_laporan_' . ($index + 1) . '.png';
-                $fileNameSebelum = 'contoh_sebelum_' . ($index + 1) . '.png';
-                $fileNameSesudah = 'contoh_sesudah_' . ($index + 1) . '.png';
-
-                File::copy($sourcePath, $dirs['laporan_fotos'] . '/' . $fileNameLaporan);
-                File::copy($sourcePath, $dirs['dokumentasi_sebelum'] . '/' . $fileNameSebelum);
-                File::copy($sourcePath, $dirs['dokumentasi_sesudah'] . '/' . $fileNameSesudah);
-
-                $fotoLaporanPaths[] = 'laporan_fotos/' . $fileNameLaporan;
-                $fotoSebelumPaths[] = 'dokumentasi_sebelum/' . $fileNameSebelum;
-                $fotoSesudahPaths[] = 'dokumentasi_sesudah/' . $fileNameSesudah;
-            }
-        }
-
-        // Fallback jika tidak ada gambar
-        if (empty($fotoLaporanPaths)) {
-            $fotoLaporanPaths = ['laporan_fotos/contoh_laporan_1.png'];
-            $fotoSebelumPaths = ['dokumentasi_sebelum/contoh_sebelum_1.png'];
-            $fotoSesudahPaths = ['dokumentasi_sesudah/contoh_sesudah_1.png'];
-        }
 
         $roleMasyarakat = Role::where('name', 'masyarakat')->first();
         $faker = \Faker\Factory::create('id_ID');
@@ -135,7 +94,6 @@ class LaporanSampahSeeder extends Seeder
             $lat = -7.6531 + (mt_rand(-350, 350) / 10000);
             $lng = 111.3284 + (mt_rand(-350, 350) / 10000);
 
-            $selectedPhoto = $fotoLaporanPaths[array_rand($fotoLaporanPaths)];
             $pelapor = $users[array_rand($users)];
 
             $prioritasOptions = ['rendah', 'sedang', 'tinggi'];
@@ -153,7 +111,7 @@ class LaporanSampahSeeder extends Seeder
                 'alamat_lengkap' => $alamatList[array_rand($alamatList)] . rand(1, 45),
                 'latitude' => $lat,
                 'longitude' => $lng,
-                'foto_laporan' => [$selectedPhoto],
+                'foto_laporan' => [],
                 'prioritas_pelapor' => $prioritasPelapor,
                 'prioritas_admin' => $prioritasAdmin,
                 'status' => $status,
@@ -223,14 +181,11 @@ class LaporanSampahSeeder extends Seeder
 
                     // Jika sedang_ditangani, menunggu_validasi_akhir, atau selesai
                     if (in_array($status, ['sedang_ditangani', 'menunggu_validasi_akhir', 'selesai'])) {
-                        $fotoSebelum = [$fotoSebelumPaths[array_rand($fotoSebelumPaths)]];
-                        $fotoSesudah = in_array($status, ['menunggu_validasi_akhir', 'selesai']) ? [$fotoSesudahPaths[array_rand($fotoSesudahPaths)]] : null;
-
                         DokumentasiPenanganan::create([
                             'laporan_sampah_id' => $laporan->id,
                             'petugas_id' => $assignedPetugas->id,
-                            'foto_sebelum' => $fotoSebelum,
-                            'foto_sesudah' => $fotoSesudah,
+                            'foto_sebelum' => [],
+                            'foto_sesudah' => [],
                             'catatan_pekerjaan' => 'Pembersihan area telah dilaksanakan dengan armada pengangkut.',
                             'waktu_mulai' => Carbon::now()->subHours(rand(5, 10)),
                             'waktu_selesai' => in_array($status, ['menunggu_validasi_akhir', 'selesai']) ? Carbon::now()->subHours(rand(1, 4)) : null,

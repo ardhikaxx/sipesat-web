@@ -12,7 +12,7 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
-                    <form action="{{ route('admin.berita.update', $beritum->id) }}" method="POST">
+                    <form action="{{ route('admin.berita.update', $beritum->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -25,9 +25,9 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Kategori</label>
                                 <select name="kategori" class="form-select">
-                                    <option value="Berita" {{ old('kategori', $beritum->kategori) == 'Berita' ? 'selected' : '' }}>Berita</option>
-                                    <option value="Edukasi" {{ old('kategori', $beritum->kategori) == 'Edukasi' ? 'selected' : '' }}>Edukasi</option>
-                                    <option value="Pengumuman" {{ old('kategori', $beritum->kategori) == 'Pengumuman' ? 'selected' : '' }}>Pengumuman</option>
+                                    <option value="kegiatan" {{ old('kategori', $beritum->kategori) == 'kegiatan' || old('kategori', $beritum->kategori) == 'Berita' ? 'selected' : '' }}>Kegiatan / Berita</option>
+                                    <option value="edukasi" {{ old('kategori', $beritum->kategori) == 'edukasi' || old('kategori', $beritum->kategori) == 'Edukasi' ? 'selected' : '' }}>Edukasi</option>
+                                    <option value="pengumuman" {{ old('kategori', $beritum->kategori) == 'pengumuman' || old('kategori', $beritum->kategori) == 'Pengumuman' ? 'selected' : '' }}>Pengumuman</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -43,6 +43,18 @@
                             <label class="form-label fw-bold">Konten Artikel <span class="text-danger">*</span></label>
                             <textarea name="konten" class="form-control @error('konten') is-invalid @enderror" rows="10" required>{{ old('konten', $beritum->konten) }}</textarea>
                             @error('konten') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Gambar Thumbnail (Opsional)</label>
+                            <div class="mb-2">
+                                <img src="{{ $beritum->thumbnail ? Storage::url($beritum->thumbnail) : asset('images/no-image.png') }}" 
+                                     onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" 
+                                     alt="Thumbnail" class="img-thumbnail" style="max-height: 150px;">
+                            </div>
+                            <input type="file" name="thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
+                            @error('thumbnail') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            <small class="text-muted">Biarkan kosong jika tidak ingin mengubah gambar. Format: JPG, JPEG, PNG, WEBP. Maks 2MB.</small>
                         </div>
                         
                         <button type="submit" class="btn btn-warning text-dark fw-bold w-100"><i class="fa-solid fa-save me-2"></i>Update Berita</button>
