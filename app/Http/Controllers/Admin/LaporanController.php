@@ -100,6 +100,8 @@ class LaporanController extends Controller
                 'keterangan' => 'Laporan telah diverifikasi oleh Admin.'
             ]);
 
+            logActivity('Verifikasi laporan', 'Laporan', 'Laporan "' . $laporan->kode_laporan . '" diverifikasi.', auth()->id());
+
             return redirect()->back()->with('success', 'Laporan berhasil diverifikasi.');
         }
 
@@ -152,6 +154,8 @@ class LaporanController extends Controller
             'keterangan' => 'Petugas telah ditugaskan.'
         ]);
 
+        logActivity('Tugaskan petugas', 'Penugasan', 'Laporan "' . $laporan->kode_laporan . '" ditugaskan ke petugas ID ' . $request->petugas_id . '.', auth()->id());
+
         return redirect()->back()->with('success', 'Petugas berhasil ditugaskan.');
     }
 
@@ -172,6 +176,8 @@ class LaporanController extends Controller
                 'status_sesudah' => 'selesai',
                 'keterangan' => 'Penanganan laporan telah divalidasi dan selesai.'
             ]);
+
+            logActivity('Validasi akhir laporan', 'Laporan', 'Laporan "' . $laporan->kode_laporan . '" divalidasi selesai.', auth()->id());
 
             return redirect()->back()->with('success', 'Laporan berhasil divalidasi dan diselesaikan.');
         }

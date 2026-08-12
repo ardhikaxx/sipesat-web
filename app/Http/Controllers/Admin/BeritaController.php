@@ -41,6 +41,8 @@ class BeritaController extends Controller
             'tanggal_publish' => $request->status === 'published' ? now() : null,
         ]);
 
+        logActivity('Tambah berita', 'Berita', 'Berita "' . $request->judul . '" ditambahkan.');
+
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan');
     }
 
@@ -84,6 +86,8 @@ class BeritaController extends Controller
             'tanggal_publish' => $request->status === 'published' ? ($beritum->tanggal_publish ?? now()) : null,
         ]);
 
+        logActivity('Ubah berita', 'Berita', 'Berita "' . $beritum->judul . '" diperbarui.');
+
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui');
     }
 
@@ -95,6 +99,8 @@ class BeritaController extends Controller
                 \Illuminate\Support\Facades\File::delete($oldPath);
             }
         }
+
+        logActivity('Hapus berita', 'Berita', 'Berita "' . $beritum->judul . '" dihapus.');
 
         $beritum->delete();
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus');

@@ -94,6 +94,8 @@ class TugasController extends Controller
                 'keterangan' => 'Petugas telah mulai menangani.'
             ]);
 
+            logActivity('Mulai menangani laporan', 'Penanganan', 'Laporan "' . $laporan->kode_laporan . '" mulai ditangani.', auth()->id());
+
             return redirect()->back()->with('success', 'Status diupdate menjadi sedang ditangani.');
         }
 
@@ -130,6 +132,8 @@ class TugasController extends Controller
                 'status_sesudah' => 'menunggu_validasi_akhir',
                 'keterangan' => 'Petugas telah selesai menangani.'
             ]);
+
+            logActivity('Selesaikan penanganan', 'Penanganan', 'Laporan "' . $laporan->kode_laporan . '" selesai ditangani.', auth()->id());
 
             return redirect()->back()->with('success', 'Status diupdate menjadi menunggu validasi akhir.');
         }

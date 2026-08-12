@@ -9,7 +9,11 @@ class ActivityLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'aktivitas', 'modul', 'deskripsi', 'ip_address', 'user_agent'];
+    public $timestamps = false;
+
+    protected $casts = ['created_at' => 'datetime'];
+
+    protected $fillable = ['user_id', 'aktivitas', 'modul', 'deskripsi', 'ip_address', 'user_agent', 'created_at'];
     public function user() { return $this->belongsTo(User::class); }
     
 }

@@ -37,6 +37,7 @@ class PetugasController extends Controller
             'wilayah_tugas_kecamatan_id' => $request->wilayah_tugas_kecamatan_id, 
             'status_petugas' => 'aktif'
         ]);
+        logActivity('Tambah petugas', 'Master Data', 'Petugas "' . $user->name . '" (NIP ' . $request->nip . ') ditambahkan.');
         return redirect()->route('admin.petugas.index')->with('success', 'Petugas ditambahkan');
     }
     public function edit(Petugas $petuga) {
@@ -55,11 +56,14 @@ class PetugasController extends Controller
         $petuga->update([
             'nip' => $request->nip, 'wilayah_tugas_kecamatan_id' => $request->wilayah_tugas_kecamatan_id, 'status_petugas' => $request->status_petugas
         ]);
+        logActivity('Ubah petugas', 'Master Data', 'Petugas "' . $petuga->user->name . '" diperbarui.');
         return redirect()->route('admin.petugas.index')->with('success', 'Petugas diupdate');
     }
     public function destroy(Petugas $petuga) {
+        $nama = $petuga->user->name;
         $petuga->user()->delete();
         $petuga->delete();
+        logActivity('Hapus petugas', 'Master Data', 'Petugas "' . $nama . '" dihapus.');
         return redirect()->route('admin.petugas.index')->with('success', 'Petugas dihapus');
     }
 }

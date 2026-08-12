@@ -19,6 +19,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $role = auth()->user()->role->name;
+            logActivity('Login berhasil', 'Autentikasi', 'User "' . auth()->user()->name . '" masuk ke sistem.');
             return redirect()->route($role . ".dashboard");
         }
 
@@ -26,6 +27,9 @@ class LoginController extends Controller
     }
 
     public function logout(Request $request) {
+        if (auth()->check()) {
+            logActivity('Logout', 'Autentikasi', 'User "' . auth()->user()->name . '" keluar dari sistem.', auth()->id());
+        }
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

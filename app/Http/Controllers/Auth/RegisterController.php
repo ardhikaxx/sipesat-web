@@ -37,6 +37,8 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
+        logActivity('Registrasi akun', 'Autentikasi', 'User baru "'. $user->name .'" (' . $user->email . ') mendaftar.', $user->id);
+
         return redirect()->route('masyarakat.dashboard');
     }
 }

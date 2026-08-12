@@ -59,6 +59,8 @@ class LaporanController extends Controller
         $laporan->status = 'menunggu_verifikasi';
         $laporan->save();
 
+        logActivity('Membuat laporan', 'Laporan', 'Laporan baru "' . $laporan->judul_laporan . '" (kode ' . $laporan->kode_laporan . ') dikirim.');
+
         return redirect()->route('masyarakat.dashboard')->with('success', 'Laporan berhasil dikirim.');
     }
 
