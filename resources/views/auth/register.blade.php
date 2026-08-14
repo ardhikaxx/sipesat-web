@@ -72,6 +72,18 @@
                             </div>
                         </div>
 
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-dark">Captcha</label>
+                            <div class="d-flex mb-2">
+                                <span>{!! captcha_img('flat') !!}</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2" onclick="document.querySelector('img').src = '/captcha/flat?' + Math.random()">
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                            <input type="text" name="captcha" class="form-control form-control-lg bg-light border-0 @error('captcha') is-invalid @enderror" required placeholder="Masukkan kode captcha">
+                            @error('captcha') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                        </div>
+
                         <button type="submit" class="btn btn-primary w-100 py-3 mb-4 fw-bold shadow-sm" style="border-radius: 12px; font-size: 1.1rem;">Daftar Sekarang</button>
                         
                         <div class="text-center">

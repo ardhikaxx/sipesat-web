@@ -91,9 +91,9 @@
     <div class="card-header bg-white border-0 pt-4 pb-2 d-flex justify-content-between align-items-center">
         <h6 class="fw-bold m-0"><i class="fa-solid fa-map-location-dot me-2 text-primary"></i>Peta Sebaran Laporan (Live Map)</h6>
         <div class="small">
-            <span class="badge bg-warning text-dark me-1">Menunggu</span>
-            <span class="badge bg-primary me-1">Diproses</span>
-            <span class="badge bg-success">Selesai</span>
+            <span class="badge bg-danger me-1">Belum Diatasi</span>
+            <span class="badge bg-warning text-dark me-1">Masih Diproses</span>
+            <span class="badge bg-success">Sudah Diatasi</span>
         </div>
     </div>
     <div class="card-body p-0">
@@ -157,12 +157,12 @@
 
         // Custom Icons based on status
         const colorMap = {
-            'menunggu_verifikasi': '#E8A33D', // warning
-            'diverifikasi': '#2E7DA3', // info
-            'sedang_ditangani': '#1F6E43', // primary
-            'menunggu_validasi_akhir': '#6B7280', // secondary
-            'selesai': '#7FB069', // success
-            'ditolak': '#C1443C' // danger
+            'menunggu_verifikasi': '#dc3545', // merah (belum diatasi)
+            'diverifikasi': '#ffc107', // kuning (masih diproses)
+            'sedang_ditangani': '#ffc107', // kuning (masih diproses)
+            'menunggu_validasi_akhir': '#198754', // hijau (sudah diatasi)
+            'selesai': '#198754', // hijau (sudah diatasi)
+            'ditolak': '#dc3545' // merah (ditolak/belum diatasi)
         };
 
         laporans.forEach(laporan => {
@@ -173,22 +173,26 @@
                 const markerColor = colorMap[laporan.status] || '#1F2A24';
                 const customIcon = L.divIcon({
                     className: 'custom-div-icon',
-                    html: `<div style="background-color: ${markerColor}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.5);"></div>`,
-                    iconSize: [14, 14],
-                    iconAnchor: [7, 7]
+                    html: `<div style="background-color: ${markerColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
                 });
 
                 const detailUrl = `/admin/laporan/${laporan.id}`;
                 const namaKategori = laporan.kategori_sampah ? laporan.kategori_sampah.nama_kategori : '-';
                 const pelapor = laporan.user ? laporan.user.name : 'Anonim';
+                const formattedStatus = laporan.status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
                 
                 const popupHtml = `
                     <div style="min-width: 200px;">
-                        <h6 class="fw-bold mb-1">${laporan.judul_laporan}</h6>
+                        <div class="mb-1 d-flex justify-content-between align-items-start">
+                            <h6 class="fw-bold m-0 pe-2">${laporan.judul_laporan}</h6>
+                            <span class="badge" style="background-color: ${markerColor}; font-size: 0.65rem;">${formattedStatus}</span>
+                        </div>
                         <small class="text-muted d-block mb-2">${laporan.kode_laporan}</small>
                         <p class="mb-1 small"><b>Pelapor:</b> ${pelapor}</p>
                         <p class="mb-2 small"><b>Kategori:</b> ${namaKategori}</p>
-                        <a href="${detailUrl}" class="btn btn-sm btn-outline-primary w-100 rounded-pill">Lihat Detail</a>
+                        <a href="${detailUrl}" class="btn btn-sm btn-outline-primary w-100 rounded-pill mt-1">Lihat Detail</a>
                     </div>
                 `;
 

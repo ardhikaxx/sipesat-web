@@ -13,10 +13,13 @@ class LoginController extends Controller
     public function login(Request $request) {
         $credentials = $request->validate([
             "email" => ["required", "email"],
-            "password" => ["required"]
+            "password" => ["required"],
+            "captcha" => ["required", "captcha"]
+        ], [
+            "captcha.captcha" => "Kode captcha tidak sesuai, silakan coba lagi."
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
             $role = auth()->user()->role->name;
             logActivity('Login berhasil', 'Autentikasi', 'User "' . auth()->user()->name . '" masuk ke sistem.');

@@ -90,10 +90,6 @@
                             <small class="text-muted d-block mb-1">Kategori Sampah</small>
                             <span class="fw-semibold"><i class="fa-solid fa-tags text-primary me-1"></i> {{ $laporan->kategoriSampah->nama_kategori ?? '-' }}</span>
                         </div>
-                        <div class="col-sm-6">
-                            <small class="text-muted d-block mb-1">Prioritas (Pelapor)</small>
-                            <span class="fw-semibold"><i class="fa-solid fa-flag text-warning me-1"></i> {{ ucfirst($laporan->prioritas_pelapor) }}</span>
-                        </div>
                     </div>
 
                     <h6 class="fw-bold mb-2">Deskripsi</h6>

@@ -72,7 +72,8 @@
                     </div>
                     @if(auth()->user()->role->name === 'admin')
                         <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fa-solid fa-gauge-high me-2"></i> Dashboard</a>
-                        <a href="{{ route('admin.laporan.index') }}" class="{{ request()->routeIs('admin.laporan.*') || request()->routeIs('admin.monitoring.*') ? 'active' : 'text-white-50' }}"><i class="fa-solid fa-clipboard-check me-2"></i> Manajemen Laporan</a>
+                        <a href="{{ route('admin.laporan.index') }}" class="{{ request()->routeIs('admin.laporan.*') && !request()->routeIs('admin.validasi-pekerjaan') || request()->routeIs('admin.monitoring.*') ? 'active' : 'text-white-50' }}"><i class="fa-solid fa-clipboard-check me-2"></i> Manajemen Laporan</a>
+                        <a href="{{ route('admin.validasi-pekerjaan') }}" class="{{ request()->routeIs('admin.validasi-pekerjaan') ? 'active' : 'text-white-50' }}"><i class="fa-solid fa-check-double me-2"></i> Validasi Pekerjaan</a>
                         <a href="{{ route('admin.statistik.index') }}" class="{{ request()->routeIs('admin.statistik.*') ? 'active' : 'text-white-50' }}"><i class="fa-solid fa-chart-column me-2"></i> Statistik</a>
                         
                         <div class="mt-3 mb-2 px-3"><small class="text-white-50 fw-bold">DATA MASTER</small></div>

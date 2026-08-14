@@ -59,6 +59,17 @@
                             <div class="mt-2" id="mapDetailAdmin" style="height: 300px; border-radius: 8px; border: 1px solid var(--color-border); z-index: 1;"></div>
                         </div>
                     </div>
+
+                    @if($laporan->status === 'ditolak')
+                    <div class="row mb-3">
+                        <div class="col-md-4 text-danger fw-bold">Alasan Penolakan</div>
+                        <div class="col-md-8">
+                            <div class="alert alert-danger mb-0 p-2">
+                                <i class="fa-solid fa-circle-exclamation"></i> {{ $laporan->alasan_penolakan ?? 'Tidak ada alasan.' }}
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     
                     @if($laporan->foto_laporan)
                     <div class="row mb-3">
@@ -137,6 +148,35 @@
                             @csrf
                             <button type="submit" class="btn btn-info text-white w-100 mb-2"><i class="fa-solid fa-check"></i> Verifikasi Laporan</button>
                         </form>
+                        
+                        <button type="button" class="btn btn-outline-danger w-100 mb-2" data-bs-toggle="modal" data-bs-target="#modalTolak">
+                            <i class="fa-solid fa-xmark"></i> Tolak Laporan
+                        </button>
+
+                        <!-- Modal Tolak -->
+                        <div class="modal fade" id="modalTolak" tabindex="-1">
+                          <div class="modal-dialog">
+                            <form action="{{ route('admin.laporan.tolak', $laporan->id) }}" method="POST">
+                              @csrf
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title text-danger"><i class="fa-solid fa-triangle-exclamation"></i> Tolak Laporan</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="mb-3">
+                                    <label class="form-label fw-bold">Alasan Penolakan</label>
+                                    <textarea name="alasan_penolakan" class="form-control" rows="3" required placeholder="Tulis alasan laporan ini ditolak (misal: Alamat tidak jelas, Bukan kewenangan DLH, dll)..."></textarea>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                  <button type="submit" class="btn btn-danger">Tolak Laporan</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
                     @endif
 
                     @if(in_array($laporan->status, ['menunggu_verifikasi', 'diverifikasi']))
@@ -148,9 +188,20 @@
                                 <select name="petugas_id" class="form-select" required>
                                     <option value="">-- Pilih Petugas --</option>
                                     @foreach($petugasList as $p)
-                                        <option value="{{ $p->id }}" {{ ($laporan->penugasan && $laporan->penugasan->petugas_id == $p->id) ? 'selected' : '' }}>{{ $p->user?->name ?? 'Petugas' }} (NIP: {{ $p->nip }})</option>
+                                        <option value="{{ $p->id }}" {{ ($laporan->penugasan && $laporan->penugasan->petugas_id == $p->id) ? 'selected' : '' }}>
+                                            {{ $p->user?->name ?? 'Petugas' }} 
+                                            @if($p->penugasans_count > 0)
+                                                (Sedang menangani {{ $p->penugasans_count }} tugas)
+                                            @else
+                                                (Tersedia)
+                                            @endif
+                                        </option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tenggat Waktu (Opsional)</label>
+                                <input type="datetime-local" name="tenggat_waktu" class="form-control" value="{{ old('tenggat_waktu', $laporan->penugasan?->tenggat_waktu ? $laporan->penugasan->tenggat_waktu->format('Y-m-d\TH:i') : '') }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Catatan Admin</label>

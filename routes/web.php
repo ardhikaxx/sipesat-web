@@ -56,6 +56,10 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     Route::prefix('masyarakat')->middleware('role:masyarakat')->name('masyarakat.')->group(function () {
         Route::get('/dashboard', [MasyarakatDashboard::class, 'index'])->name('dashboard');
+        Route::get('/get-desas', function(Illuminate\Http\Request $request) {
+            $kecamatanId = $request->kecamatan_id;
+            return response()->json(App\Models\Desa::where('kecamatan_id', $kecamatanId)->get());
+        })->name('get.desas');
         Route::resource('laporan', App\Http\Controllers\Masyarakat\LaporanController::class);
     });
 
@@ -65,8 +69,10 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('laporan/export/excel', [App\Http\Controllers\Admin\LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
         Route::resource('laporan', App\Http\Controllers\Admin\LaporanController::class);
         Route::post('laporan/{laporan}/verifikasi', [App\Http\Controllers\Admin\LaporanController::class, 'verifikasi'])->name('laporan.verifikasi');
+        Route::post('laporan/{laporan}/tolak', [App\Http\Controllers\Admin\LaporanController::class, 'tolak'])->name('laporan.tolak');
         Route::post('laporan/{laporan}/tugaskan', [App\Http\Controllers\Admin\LaporanController::class, 'tugaskan'])->name('laporan.tugaskan');
         Route::post('laporan/{laporan}/validasi-akhir', [App\Http\Controllers\Admin\LaporanController::class, 'validasiAkhir'])->name('laporan.validasi-akhir');
+        Route::get('validasi-pekerjaan', [App\Http\Controllers\Admin\LaporanController::class, 'validasiPekerjaan'])->name('validasi-pekerjaan');
         
         Route::resource('kategori-sampah', App\Http\Controllers\Admin\KategoriSampahController::class);
         Route::resource('wilayah', App\Http\Controllers\Admin\WilayahController::class);

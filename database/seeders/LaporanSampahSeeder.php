@@ -96,9 +96,7 @@ class LaporanSampahSeeder extends Seeder
 
             $pelapor = $users[array_rand($users)];
 
-            $prioritasOptions = ['rendah', 'sedang', 'tinggi'];
-            $prioritasPelapor = $prioritasOptions[array_rand($prioritasOptions)];
-            $prioritasAdmin = in_array($status, ['menunggu_verifikasi']) ? null : $prioritasPelapor;
+
 
             $laporan = LaporanSampah::create([
                 'kode_laporan' => 'SPT-' . date('Ymd') . '-' . str_pad($reportNum, 4, '0', STR_PAD_LEFT),
@@ -112,8 +110,7 @@ class LaporanSampahSeeder extends Seeder
                 'latitude' => $lat,
                 'longitude' => $lng,
                 'foto_laporan' => [],
-                'prioritas_pelapor' => $prioritasPelapor,
-                'prioritas_admin' => $prioritasAdmin,
+
                 'status' => $status,
                 'alasan_penolakan' => ($status === 'ditolak') ? 'Laporan tidak sesuai dengan foto / lokasi bukan fasilitas publik.' : null,
                 'verified_by' => in_array($status, ['menunggu_verifikasi']) ? null : 1,
@@ -167,6 +164,7 @@ class LaporanSampahSeeder extends Seeder
                         'petugas_id' => $assignedPetugas->id,
                         'assigned_by' => 1,
                         'catatan_admin' => 'Mohon segera dibersihkan dan diangkut ke TPA.',
+                        'tenggat_waktu' => Carbon::now()->addDays(rand(1, 3)),
                         'assigned_at' => Carbon::now()->subDays(rand(1, 3))
                     ]);
 

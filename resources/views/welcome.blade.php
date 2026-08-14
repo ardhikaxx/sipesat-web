@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
 <!-- Google Fonts for Ultra Heavy Display Header -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Outfit:ital,wght@0,900;1,900&display=swap">
@@ -131,19 +129,53 @@
         </div>
     </div>
 
-    <!-- Map Section -->
+    <!-- Alur Pelaporan Section -->
     <div class="container my-5 pt-4">
         <div class="text-center mb-5">
-            <div class="d-flex align-items-center justify-content-center gap-4 mb-4">
-                <img src="{{ asset('images/logo_magetan.png') }}" alt="Logo Kab Magetan" style="height: 75px; width: auto;">
-                <img src="{{ asset('images/logo_dlh_black.png') }}" alt="Logo DLH Magetan" style="height: 75px; width: auto;">
-                <img src="{{ asset('images/logo_extra.png') }}" alt="Logo SIPESAT" style="height: 75px; width: auto;">
-            </div>
-            <h2 class="fw-bold section-title">Peta Persebaran Laporan Selesai</h2>
-            <p class="text-muted mt-3">Pantau secara langsung titik-titik tumpukan sampah yang telah berhasil ditangani oleh petugas kebersihan kami di seluruh wilayah Magetan.</p>
+            <h2 class="fw-bold section-title">Cara Melapor di SIPESAT</h2>
+            <p class="text-muted mt-3">Sampaikan laporan Anda dalam 3 langkah mudah. Kami akan segera menindaklanjutinya.</p>
         </div>
-        <div class="map-container mb-5">
-            <div id="map" style="height: 550px; width: 100%;"></div>
+        
+        <div class="row g-4 text-center justify-content-center mb-5">
+            <div class="col-md-4">
+                <div class="card border-0 h-100 banner-card p-4">
+                    <div class="mb-3">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fa-solid fa-camera fa-2x"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold">1. Foto Kejadian</h5>
+                    <p class="text-muted">Ambil foto tumpukan sampah atau pelanggaran kebersihan yang Anda temui di lokasi.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 h-100 banner-card p-4">
+                    <div class="mb-3">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fa-solid fa-map-location-dot fa-2x"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold">2. Tentukan Lokasi</h5>
+                    <p class="text-muted">Isi detail lokasi dan deskripsi singkat agar petugas kami mudah menemukan titik tersebut.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 h-100 banner-card p-4">
+                    <div class="mb-3">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fa-solid fa-truck-fast fa-2x"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold">3. Laporan Ditangani</h5>
+                    <p class="text-muted">Laporan diteruskan ke petugas kebersihan DLH Magetan untuk segera ditangani.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="{{ route('masyarakat.laporan.create') }}" class="btn btn-hero btn-lg rounded-pill px-5 py-3 fw-bold shadow">
+                <i class="fa-solid fa-bullhorn me-2"></i> Laporkan Sekarang
+            </a>
         </div>
     </div>
 
@@ -206,110 +238,5 @@
     </footer>
 </div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Default ke wilayah Magetan
-        var map = L.map('map').setView([-7.6531, 111.3284], 12);
 
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-
-        var markersGroup = L.featureGroup().addTo(map);
-        var hasMarkers = false;
-
-        // Add markers for each laporan
-        @foreach($laporans as $laporan)
-            @if($laporan->latitude && $laporan->longitude)
-                hasMarkers = true;
-                
-                @php
-                    $fotoAwal = null;
-                    if (!empty($laporan->foto_laporan)) {
-                        $firstAwal = is_array($laporan->foto_laporan) ? ($laporan->foto_laporan[0] ?? null) : $laporan->foto_laporan;
-                        if ($firstAwal) {
-                            $fotoAwal = asset(str_starts_with($firstAwal, 'uploads/') ? $firstAwal : 'uploads/' . $firstAwal);
-                        }
-                    }
-
-                    $fotoSesudah = null;
-                    if ($laporan->dokumentasiPenanganan && !empty($laporan->dokumentasiPenanganan->foto_sesudah)) {
-                        $firstSesudah = is_array($laporan->dokumentasiPenanganan->foto_sesudah) ? ($laporan->dokumentasiPenanganan->foto_sesudah[0] ?? null) : $laporan->dokumentasiPenanganan->foto_sesudah;
-                        if ($firstSesudah) {
-                            $fotoSesudah = asset(str_starts_with($firstSesudah, 'uploads/') ? $firstSesudah : 'uploads/' . $firstSesudah);
-                        }
-                    }
-                @endphp
-
-                var popupContent = `
-                    <div style="min-width: 260px;">
-                        <h6 class="fw-bold mb-1 text-primary">{{ $laporan->judul_laporan }}</h6>
-                        <p class="text-muted small mb-2"><i class="fa-solid fa-hashtag"></i> {{ $laporan->kode_laporan }}</p>
-                        
-                        @if($fotoAwal || $fotoSesudah)
-                        <div class="row g-1 mb-2">
-                            @if($fotoAwal && $fotoSesudah)
-                                <div class="col-6">
-                                    <small class="d-block text-muted text-center mb-1" style="font-size:10px; font-weight:600;">Sebelum</small>
-                                    <img src="{{ $fotoAwal }}" onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" class="img-fluid rounded border" style="height: 90px; width: 100%; object-fit: cover;" alt="Foto Sebelum">
-                                </div>
-                                <div class="col-6">
-                                    <small class="d-block text-success text-center mb-1" style="font-size:10px; font-weight:600;">Sesudah</small>
-                                    <img src="{{ $fotoSesudah }}" onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" class="img-fluid rounded border" style="height: 90px; width: 100%; object-fit: cover;" alt="Foto Sesudah">
-                                </div>
-                            @elseif($fotoSesudah)
-                                <div class="col-12">
-                                    <small class="d-block text-success mb-1" style="font-size:10px; font-weight:600;">Foto Penanganan</small>
-                                    <img src="{{ $fotoSesudah }}" onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" class="img-fluid rounded border" style="height: 120px; width: 100%; object-fit: cover;" alt="Foto Sesudah">
-                                </div>
-                            @elseif($fotoAwal)
-                                <div class="col-12">
-                                    <small class="d-block text-muted mb-1" style="font-size:10px; font-weight:600;">Foto Laporan</small>
-                                    <img src="{{ $fotoAwal }}" onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" class="img-fluid rounded border" style="height: 120px; width: 100%; object-fit: cover;" alt="Foto Laporan">
-                                </div>
-                            @endif
-                        </div>
-                        @endif
-
-                        <div class="mb-2">
-                            <small class="d-block text-secondary">Pelapor:</small>
-                            <span class="fw-semibold"><i class="fa-solid fa-user me-1"></i>{{ $laporan->user->name ?? 'Anonim' }}</span>
-                        </div>
-                        
-                        <div class="mb-2">
-                            <small class="d-block text-secondary">Kategori:</small>
-                            <span class="badge bg-secondary">{{ $laporan->kategoriSampah->nama_kategori ?? '-' }}</span>
-                        </div>
-
-                        <div class="mb-2">
-                            <small class="d-block text-secondary">Lokasi:</small>
-                            <span>{{ $laporan->alamat_lengkap }}</span>
-                        </div>
-
-                        <div class="mb-2">
-                            <small class="d-block text-secondary">Diselesaikan Pada:</small>
-                            <span><i class="fa-solid fa-calendar-check me-1"></i>{{ $laporan->completed_at ? \Carbon\Carbon::parse($laporan->completed_at)->translatedFormat('d F Y H:i') : '-' }}</span>
-                        </div>
-                        
-                        <div class="mt-2 border-top pt-2 text-center">
-                            <span class="badge bg-success w-100 py-2"><i class="fa-solid fa-check-circle me-1"></i> Laporan Selesai</span>
-                        </div>
-                    </div>
-                `;
-
-                L.marker([{{ $laporan->latitude }}, {{ $laporan->longitude }}]).addTo(markersGroup)
-                    .bindPopup(popupContent, { maxWidth: 320 });
-            @endif
-        @endforeach
-
-        // Jika ada marker, paskan ukuran peta (zoom/center) agar semua marker terlihat
-        if (hasMarkers) {
-            map.fitBounds(markersGroup.getBounds(), { padding: [50, 50] });
-        }
-    });
-</script>
 @endsection

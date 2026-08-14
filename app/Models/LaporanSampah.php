@@ -9,7 +9,7 @@ class LaporanSampah extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['kode_laporan', 'user_id', 'kategori_sampah_id', 'kecamatan_id', 'desa_id', 'judul_laporan', 'deskripsi', 'alamat_lengkap', 'latitude', 'longitude', 'foto_laporan', 'prioritas_pelapor', 'prioritas_admin', 'status', 'alasan_penolakan', 'verified_by', 'verified_at', 'completed_at'];
+    protected $fillable = ['kode_laporan', 'user_id', 'kategori_sampah_id', 'kecamatan_id', 'desa_id', 'judul_laporan', 'deskripsi', 'alamat_lengkap', 'latitude', 'longitude', 'foto_laporan', 'status', 'alasan_penolakan', 'verified_by', 'verified_at', 'completed_at'];
     protected $casts = ['foto_laporan' => 'array', 'verified_at' => 'datetime', 'completed_at' => 'datetime'];
     public function user() { return $this->belongsTo(User::class); }
     public function kategoriSampah() { return $this->belongsTo(KategoriSampah::class); }

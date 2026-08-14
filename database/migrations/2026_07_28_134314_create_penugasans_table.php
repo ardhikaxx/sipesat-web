@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('petugas_id')->constrained('petugas')->onDelete('cascade');
             $table->foreignId('assigned_by')->constrained('users')->onDelete('cascade');
             $table->text('catatan_admin')->nullable();
+            $table->dateTime('tenggat_waktu')->nullable();
             $table->timestamp('assigned_at')->useCurrent();
             $table->timestamps();
         });

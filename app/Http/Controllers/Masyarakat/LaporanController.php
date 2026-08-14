@@ -20,7 +20,8 @@ class LaporanController extends Controller
     {
         $kategoris = KategoriSampah::where('is_active', true)->get();
         $kecamatans = Kecamatan::all();
-        return view('masyarakat.laporan.create', compact('kategoris', 'kecamatans'));
+        $desas = Desa::all();
+        return view('masyarakat.laporan.create', compact('kategoris', 'kecamatans', 'desas'));
     }
 
     public function store(Request $request)
@@ -29,13 +30,20 @@ class LaporanController extends Controller
             'judul_laporan' => 'required|string|max:150',
             'kategori_sampah_id' => 'required|exists:kategori_sampahs,id',
             'kecamatan_id' => 'required|exists:kecamatans,id',
-            'desa_id' => 'required|exists:desas,id',
+            'desa_id' => [
+                'required',
+                \Illuminate\Validation\Rule::exists('desas', 'id')->where(function ($query) use ($request) {
+                    return $query->where('kecamatan_id', $request->kecamatan_id);
+                }),
+            ],
             'deskripsi' => 'required|string',
             'alamat_lengkap' => 'required|string',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
-            'prioritas_pelapor' => 'required|in:rendah,sedang,tinggi',
+
             'foto_laporan' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'desa_id.exists' => 'Desa/Kelurahan yang dipilih tidak valid atau bukan bagian dari Kecamatan yang dipilih.',
         ]);
 
         $data = $request->except('foto_laporan');

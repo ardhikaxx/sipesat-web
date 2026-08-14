@@ -46,6 +46,11 @@
                             {{ $laporan->alamat_lengkap }}<br>
                             <small class="text-muted">Kecamatan: {{ $laporan->kecamatan->nama ?? '-' }}, Desa: {{ $laporan->desa->nama ?? '-' }}</small>
                             <div class="mt-2" id="mapDetailPetugas" style="height: 200px; border-radius: 8px; border: 1px solid var(--color-border); z-index: 1;"></div>
+                            <div class="mt-2">
+                                <a href="https://www.google.com/maps/dir/?api=1&destination={{ $laporan->latitude }},{{ $laporan->longitude }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa-solid fa-map-location-dot"></i> Buka Rute di Google Maps
+                                </a>
+                            </div>
                         </div>
                     </div>
                     @if($laporan->foto_laporan)
@@ -66,6 +71,14 @@
                         <div class="col-md-4 text-muted">Catatan Admin Penugas</div>
                         <div class="col-md-8 fw-bold text-danger">{{ $penugasan->catatan_admin ?? 'Tidak ada catatan.' }}</div>
                     </div>
+                    @if($penugasan->tenggat_waktu)
+                    <div class="row mb-3">
+                        <div class="col-md-4 text-muted">Tenggat Waktu</div>
+                        <div class="col-md-8 fw-bold text-warning">
+                            <i class="fa-regular fa-clock"></i> {{ $penugasan->tenggat_waktu->format('d M Y H:i') }}
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
             

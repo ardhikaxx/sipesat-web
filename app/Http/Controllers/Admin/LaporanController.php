@@ -15,13 +15,24 @@ class LaporanController extends Controller
     {
         $query = $this->buildFilterQuery($request);
 
-        $laporans = $query->latest()->paginate(20)->withQueryString();
+        $laporans = $query->latest()->paginate(10)->withQueryString();
 
         $kategoris = \App\Models\KategoriSampah::all();
         $kecamatans = \App\Models\Kecamatan::all();
         $petugasList = \App\Models\Petugas::with('user')->where('status_petugas', 'aktif')->get();
 
         return view('admin.laporan.index', compact('laporans', 'kategoris', 'kecamatans', 'petugasList'));
+    }
+
+    public function validasiPekerjaan(Request $request)
+    {
+        $laporans = LaporanSampah::with(['kategoriSampah', 'kecamatan', 'penugasan.petugas.user', 'user', 'dokumentasiPenanganan'])
+            ->whereIn('status', ['menunggu_validasi_akhir', 'sedang_ditangani', 'diverifikasi'])
+            ->whereHas('penugasan')
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.laporan.validasi', compact('laporans'));
     }
 
     private function buildFilterQuery(Request $request)
@@ -76,7 +87,14 @@ class LaporanController extends Controller
             'laporanStatusHistories.user'
         ])->findOrFail($id);
 
-        $petugasList = Petugas::with('user')->where('status_petugas', 'aktif')->get();
+        $petugasList = Petugas::with('user')
+            ->withCount(['penugasans' => function($q) {
+                $q->whereHas('laporanSampah', function($q2) {
+                    $q2->whereIn('status', ['diverifikasi', 'sedang_ditangani']);
+                });
+            }])
+            ->where('status_petugas', 'aktif')
+            ->get();
 
         return view('admin.laporan.show', compact('laporan', 'petugasList'));
     }
@@ -108,11 +126,44 @@ class LaporanController extends Controller
         return redirect()->back()->with('error', 'Status laporan tidak valid untuk diverifikasi.');
     }
 
+    public function tolak(Request $request, $id)
+    {
+        $request->validate([
+            'alasan_penolakan' => 'required|string|max:500'
+        ]);
+
+        $laporan = LaporanSampah::findOrFail($id);
+        
+        if ($laporan->status === 'menunggu_verifikasi') {
+            $laporan->update([
+                'status' => 'ditolak',
+                'alasan_penolakan' => $request->alasan_penolakan,
+                'verified_by' => auth()->id(),
+                'verified_at' => now()
+            ]);
+
+            LaporanStatusHistory::create([
+                'laporan_sampah_id' => $laporan->id,
+                'changed_by' => auth()->id(),
+                'status_sebelum' => 'menunggu_verifikasi',
+                'status_sesudah' => 'ditolak',
+                'keterangan' => 'Laporan ditolak. Alasan: ' . $request->alasan_penolakan
+            ]);
+
+            logActivity('Tolak laporan', 'Laporan', 'Laporan "' . $laporan->kode_laporan . '" ditolak.', auth()->id());
+
+            return redirect()->back()->with('success', 'Laporan berhasil ditolak.');
+        }
+
+        return redirect()->back()->with('error', 'Status laporan tidak valid untuk ditolak.');
+    }
+
     public function tugaskan(Request $request, $id)
     {
         $request->validate([
             'petugas_id' => 'required|exists:petugas,id',
-            'catatan_admin' => 'nullable|string'
+            'catatan_admin' => 'nullable|string',
+            'tenggat_waktu' => 'nullable|date'
         ]);
 
         $laporan = LaporanSampah::findOrFail($id);
@@ -142,6 +193,7 @@ class LaporanController extends Controller
                 'petugas_id' => $request->petugas_id,
                 'assigned_by' => auth()->id(),
                 'catatan_admin' => $request->catatan_admin,
+                'tenggat_waktu' => $request->tenggat_waktu,
                 'assigned_at' => now()
             ]
         );

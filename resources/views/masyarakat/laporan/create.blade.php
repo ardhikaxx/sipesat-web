@@ -5,6 +5,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <!-- Leaflet Geocoder CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 
 <style>
     .upload-drop-zone {
@@ -115,8 +118,9 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="desa_id" class="form-label">Desa / Kelurahan</label>
-                        <input type="number" class="form-control" id="desa_id" name="desa_id" value="{{ old('desa_id') ?? 1 }}" required placeholder="ID Desa (sementara manual)">
-                        <!-- Ideally this would be dynamic via AJAX based on Kecamatan -->
+                        <select class="form-select" id="desa_id" name="desa_id" required disabled>
+                            <option value="">Pilih Desa / Kelurahan</option>
+                        </select>
                     </div>
 
                     <div class="col-md-12 mb-3">
@@ -152,14 +156,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label for="prioritas_pelapor" class="form-label">Tingkat Prioritas</label>
-                        <select class="form-select" id="prioritas_pelapor" name="prioritas_pelapor" required>
-                            <option value="rendah" {{ old('prioritas_pelapor') == 'rendah' ? 'selected' : '' }}>Rendah</option>
-                            <option value="sedang" {{ old('prioritas_pelapor') == 'sedang' ? 'selected' : '' }}>Sedang</option>
-                            <option value="tinggi" {{ old('prioritas_pelapor') == 'tinggi' ? 'selected' : '' }}>Tinggi</option>
-                        </select>
-                    </div>
+
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Foto Laporan (Maks. 2MB)</label>
@@ -189,6 +186,9 @@
 <!-- Leaflet JS & Geocoder -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<!-- jQuery & Select2 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var latInput = document.getElementById('latitude');
@@ -365,6 +365,84 @@
         imagePreview.style.display = 'none';
         previewImg.src = "";
         dropZone.style.display = 'block';
+    }
+
+    // Logic untuk dropdown dinamis Kecamatan -> Desa menggunakan AJAX
+    const $kecamatanSelect = $('#kecamatan_id');
+    const $desaSelect = $('#desa_id');
+    const oldDesaId = "{{ old('desa_id') }}";
+
+    // Inisialisasi Select2
+    $kecamatanSelect.select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Cari & Pilih Kecamatan...'
+    });
+    
+    $desaSelect.select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Cari & Pilih Desa / Kelurahan...'
+    });
+
+    // KUNCI KERAS: Jangan izinkan dropdown ditutup dengan cara APAPUN sampai user benar-benar memilih!
+    $desaSelect.on('select2:closing', function (e) {
+        if (!$(this).val()) {
+            e.preventDefault();
+        }
+    });
+
+    function updateDesaDropdown(kecamatanId, autoOpen = false) {
+        $desaSelect.empty();
+        $desaSelect.append(new Option('Pilih Desa / Kelurahan', '', true, true));
+        $desaSelect.prop('disabled', true);
+        
+        if (!kecamatanId) return;
+
+        // Fetch data Desa berdasarkan Kecamatan via AJAX
+        $.ajax({
+            url: "{{ route('masyarakat.get.desas') }}",
+            type: "GET",
+            data: { kecamatan_id: kecamatanId },
+            success: function(desas) {
+                desas.forEach(desa => {
+                    const isSelected = oldDesaId == desa.id;
+                    const option = new Option(desa.nama_desa, desa.id, isSelected, isSelected);
+                    $desaSelect.append(option);
+                });
+
+                $desaSelect.prop('disabled', false);
+                $desaSelect.trigger('change.select2');
+
+                if (autoOpen) {
+                    setTimeout(() => {
+                        $desaSelect.select2('open');
+                        
+                        // Menangani issue select2 auto-close di mobile/beberapa browser
+                        // Jika dropdown masih menutup seketika, ini akan memaksa membukanya kembali 1x
+                        if (!$('.select2-container--open').length) {
+                            $desaSelect.select2('open');
+                        }
+                    }, 250);
+                }
+            },
+            error: function() {
+                alert('Gagal mengambil data Desa. Silakan coba lagi.');
+            }
+        });
+    }
+
+    $kecamatanSelect.on('select2:select', function(e) {
+        updateDesaDropdown(this.value, true);
+    });
+
+    $kecamatanSelect.on('change', function(e) {
+        // Handle programmatic changes (e.g. from initial load) without auto-opening
+        if (!e.originalEvent && !e.params) {
+            updateDesaDropdown(this.value, false);
+        }
+    });
+
+    if ($kecamatanSelect.val()) {
+        updateDesaDropdown($kecamatanSelect.val(), false);
     }
 </script>
 @endsection

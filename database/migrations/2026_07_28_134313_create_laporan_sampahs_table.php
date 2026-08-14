@@ -22,8 +22,7 @@ return new class extends Migration
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);
             $table->json('foto_laporan');
-            $table->enum('prioritas_pelapor', ['rendah', 'sedang', 'tinggi']);
-            $table->enum('prioritas_admin', ['rendah', 'sedang', 'tinggi', 'darurat'])->nullable();
+
             $table->enum('status', ['menunggu_verifikasi', 'ditolak', 'diverifikasi', 'sedang_ditangani', 'menunggu_validasi_akhir', 'selesai'])->default('menunggu_verifikasi');
             $table->text('alasan_penolakan')->nullable();
             $table->foreignId('verified_by')->nullable()->constrained('users')->onDelete('set null');

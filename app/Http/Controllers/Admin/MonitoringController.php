@@ -29,7 +29,7 @@ class MonitoringController extends Controller {
             $query->whereBetween('created_at', [$request->tanggal_mulai . ' 00:00:00', $request->tanggal_akhir . ' 23:59:59']);
         }
 
-        $laporans = $query->latest()->paginate(20)->withQueryString();
+        $laporans = $query->latest()->paginate(10)->withQueryString();
 
         $kategoris = KategoriSampah::all();
         $kecamatans = Kecamatan::all();

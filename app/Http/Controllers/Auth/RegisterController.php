@@ -23,6 +23,9 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'captcha' => 'required|captcha',
+        ], [
+            'captcha.captcha' => 'Kode captcha tidak sesuai, silakan coba lagi.',
         ]);
 
         $role = Role::where('name', 'masyarakat')->first();
