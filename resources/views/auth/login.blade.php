@@ -48,7 +48,7 @@
                         <div class="mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <label class="form-label fw-semibold text-dark mb-0">Password</label>
-                                <a href="#" class="text-decoration-none text-primary small fw-semibold">Lupa password?</a>
+                                <a href="{{ route('password.request') }}" class="text-decoration-none text-primary small fw-semibold">Lupa password?</a>
                             </div>
                             <div class="input-group">
                                 <input type="password" name="password" id="password" class="form-control form-control-lg bg-light border-0" required placeholder="••••••••">
@@ -107,6 +107,28 @@
                 }
             });
         });
+    });
+</script>
+<!-- SweetAlert CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#3085d6',
+            });
+        @endif
+        @if(session('sweet_error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('sweet_error') }}',
+                confirmButtonColor: '#3085d6',
+            });
+        @endif
     });
 </script>
 @endsection
