@@ -61,6 +61,17 @@
                 confirmButtonColor: '#3085d6',
             });
         @endif
+        
+        @if(session('sweet_success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('sweet_success') }}',
+                confirmButtonColor: '#3085d6',
+            }).then((result) => {
+                window.location.href = "{{ route('password.reset') }}";
+            });
+        @endif
     });
 </script>
 @endsection

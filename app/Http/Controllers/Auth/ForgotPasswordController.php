@@ -29,7 +29,7 @@ class ForgotPasswordController extends Controller
         // Simpan email ke session untuk tahap selanjutnya
         session(['reset_email' => $user->email]);
         
-        return redirect()->route('password.reset');
+        return back()->with('sweet_success', 'Email ditemukan. Anda akan diarahkan ke halaman pembuatan password baru.');
     }
 
     public function showResetForm(Request $request)
