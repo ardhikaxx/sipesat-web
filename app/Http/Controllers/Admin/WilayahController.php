@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class WilayahController extends Controller
 {
     public function index() {
-        $kecamatans = Kecamatan::all();
+        $kecamatans = Kecamatan::paginate(10);
         return view('admin.wilayah.index', compact('kecamatans'));
     }
     public function create() {

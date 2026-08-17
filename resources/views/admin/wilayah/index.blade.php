@@ -30,7 +30,7 @@
                     <tbody>
                         @forelse($kecamatans as $index => $k)
                         <tr>
-                            <td class="py-3 px-4">{{ $index + 1 }}</td>
+                            <td class="py-3 px-4">{{ $kecamatans->firstItem() + $index }}</td>
                             <td class="font-mono text-primary fw-bold">{{ $k->kode_kecamatan }}</td>
                             <td class="fw-bold text-dark">{{ $k->nama_kecamatan }}</td>
                             <td class="text-center">
@@ -57,6 +57,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="card-footer bg-white border-0 pt-4">
+            {{ $kecamatans->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </div>
