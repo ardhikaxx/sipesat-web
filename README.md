@@ -42,6 +42,3 @@ SIPESAT didesain dengan mengedepankan **UI/UX yang modern, premium, dan responsi
 - Gaya **Glassmorphism** dan penggunaan warna *primary* yang senada.
 - Elemen interaktif seperti tombol visibilitas (toggle show/hide) pada field password.
 
-## 📄 Lisensi
-
-Project ini bersifat open-source. Anda dapat menggunakannya sebagai bahan referensi atau pengembangan lebih lanjut.
