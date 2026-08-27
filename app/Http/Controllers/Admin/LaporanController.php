@@ -83,8 +83,11 @@ class LaporanController extends Controller
             'kecamatan', 
             'desa', 
             'penugasan.petugas.user',
+            'penugasan.assignedBy',
             'dokumentasiPenanganan',
-            'laporanStatusHistories.user'
+            'laporanStatusHistories' => function($q) {
+                $q->with('user')->orderBy('id', 'desc');
+            }
         ])->findOrFail($id);
 
         $petugasList = Petugas::with('user')
@@ -120,7 +123,7 @@ class LaporanController extends Controller
 
             logActivity('Verifikasi laporan', 'Laporan', 'Laporan "' . $laporan->kode_laporan . '" diverifikasi.', auth()->id());
 
-            return redirect()->back()->with('success', 'Laporan berhasil diverifikasi.');
+            return redirect()->back()->with('success', 'Laporan berhasil diverifikasi. Silakan tugaskan petugas lapangan.');
         }
 
         return redirect()->back()->with('error', 'Status laporan tidak valid untuk diverifikasi.');
@@ -162,30 +165,39 @@ class LaporanController extends Controller
     {
         $request->validate([
             'petugas_id' => 'required|exists:petugas,id',
-            'catatan_admin' => 'nullable|string',
+            'catatan_admin' => 'nullable|string|max:1000',
             'tenggat_waktu' => 'nullable|date'
         ]);
 
-        $laporan = LaporanSampah::findOrFail($id);
-        
+        $laporan = LaporanSampah::with('penugasan.petugas.user')->findOrFail($id);
         $statusAwal = $laporan->status;
+        $isFirstVerification = false;
+        
         if (in_array($laporan->status, ['menunggu_verifikasi', 'diverifikasi'])) {
+            if ($statusAwal === 'menunggu_verifikasi') {
+                $isFirstVerification = true;
+            }
+
             $laporan->update([
                 'status' => 'diverifikasi',
                 'verified_by' => $laporan->verified_by ?? auth()->id(),
                 'verified_at' => $laporan->verified_at ?? now()
             ]);
             
-            if ($statusAwal === 'menunggu_verifikasi') {
+            if ($isFirstVerification) {
                 LaporanStatusHistory::create([
                     'laporan_sampah_id' => $laporan->id,
                     'changed_by' => auth()->id(),
                     'status_sebelum' => 'menunggu_verifikasi',
                     'status_sesudah' => 'diverifikasi',
-                    'keterangan' => 'Laporan diverifikasi otomatis saat penugasan.'
+                    'keterangan' => 'Laporan diverifikasi oleh Admin.'
                 ]);
             }
         }
+
+        $petugas = Petugas::with('user')->findOrFail($request->petugas_id);
+        $namaPetugas = $petugas->user->name ?? 'Petugas';
+        $isReassign = ($laporan->penugasan !== null);
 
         Penugasan::updateOrCreate(
             ['laporan_sampah_id' => $laporan->id],
@@ -198,17 +210,25 @@ class LaporanController extends Controller
             ]
         );
 
+        $keteranganHistory = $isReassign
+            ? 'Penugasan diperbarui ke petugas ' . $namaPetugas . ' oleh Admin.'
+            : 'Petugas ' . $namaPetugas . ' telah ditugaskan untuk menangani laporan.';
+
         LaporanStatusHistory::create([
             'laporan_sampah_id' => $laporan->id,
             'changed_by' => auth()->id(),
             'status_sebelum' => 'diverifikasi',
             'status_sesudah' => 'diverifikasi',
-            'keterangan' => 'Petugas telah ditugaskan.'
+            'keterangan' => $keteranganHistory
         ]);
 
-        logActivity('Tugaskan petugas', 'Penugasan', 'Laporan "' . $laporan->kode_laporan . '" ditugaskan ke petugas ID ' . $request->petugas_id . '.', auth()->id());
+        logActivity('Tugaskan petugas', 'Penugasan', 'Laporan "' . $laporan->kode_laporan . '" ditugaskan ke petugas ' . $namaPetugas . '.', auth()->id());
 
-        return redirect()->back()->with('success', 'Petugas berhasil ditugaskan.');
+        $successMsg = $isReassign
+            ? 'Penugasan berhasil diperbarui. Petugas saat ini: ' . $namaPetugas . '.'
+            : 'Petugas ' . $namaPetugas . ' berhasil ditugaskan ke laporan ini.';
+
+        return redirect()->route('admin.laporan.show', $laporan->id)->with('success', $successMsg);
     }
 
     public function validasiAkhir(Request $request, $id)
